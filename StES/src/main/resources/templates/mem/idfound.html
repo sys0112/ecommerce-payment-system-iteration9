@@ -1,0 +1,27 @@
+<html lang="en" xmlns:th="http:/www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+     <header th:insert="header_nav.html"></header>
+     <h1>아이디찾기</h1>
+			<div class="d-flex justify-content-center align-items-center" style="height: calc(100vh - 200px)">
+				<form action="/mem/find-username" method="post" style="width: 400px;">
+				  <div class="mb-3 row">
+				    <label for="staticEmail" class="col-sm-2 col-form-label">등록된 휴대폰 번호</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" id="EmailFound"  name="phone" value="">
+				    </div>
+				    <button></button>
+				    <label for="staticEmail" class="col-sm-2 col-form-label">인증번호</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" id="smsAuth"  name="smsa" value="">
+				    </div>
+				  </div>
+			  	  <div class="col-12">
+				  	<button type="submit" class="btn btn-success">아이디 찾기</button>
+				  </div>
+				</form>
+			</div>   
+</body>
+</html>

@@ -1,9 +1,0 @@
-spring.application.name=boottest1
-
-server.port=6611
-
-
-
-coolsms.api_key=YOUR_COOLSMS_API_KEY
-coolsms.api_secret=YOUR_COOLSMS_API_SECRET
-coolsms.api_url=https://api.coolsms.co.kr/messages/v4/send
