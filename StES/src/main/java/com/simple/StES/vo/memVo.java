@@ -2,6 +2,8 @@ package com.simple.StES.vo;
 
 import java.util.Date;
 
+import org.hibernate.annotations.Formula;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -28,6 +30,16 @@ public class memVo {
 	private String address;
 	private String address_detail; 
 	
+	@Formula(value = "(SELECT COUNT(b.count) FROM item_basket b WHERE b.member_id=id)")//subquery
+	Integer basketCount;
+	
+	
+	public Integer getBasketCount() {
+		return basketCount;
+	}
+	public void setBasketCount(Integer basketCount) {
+		this.basketCount = basketCount;
+	}
 	public int getMnum() {
 		return Mnum;
 	}

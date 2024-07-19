@@ -1,0 +1,62 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <header th:insert="header_nav.html"></header>
+    <h1>장바구니 리스트</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>item_num</th>
+                <th>name</th>
+                <th>title</th>
+                <th>count</th>
+                <th>price</th>
+                <th>total price</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody th:with="totalSum=0">
+            <tr th:each="basket : ${basketList}" th:with="itemTotal=${basket.count * basket.item.price}">
+                <td th:text="${basket.itemNum}"></td>
+                <td th:text="${basket.item.name}"></td>
+                <td th:text="${basket.item.title}"></td>
+                <td th:text="${basket.count}"></td>
+                <td th:text="${basket.item.price}"></td>
+                <td th:text="${itemTotal}"></td>
+                <td>
+                    <form action="/itemBasket/update.do" method="post">
+                        <input type="hidden" name="basketNum" th:value="${basket.basketNum}">
+                        <input type="hidden" name="memberId" th:value="${basket.memberId}">
+                        <input type="hidden" name="itemNum" th:value="${basket.itemNum}">
+                        <div class="input-group">
+                            <select class="form-select" name="count">
+                                <th:block th:each="count : ${#numbers.sequence(1, basket.count + 10)}">
+                                    <option th:value="${count}" th:text="${count}" th:selected="${count == basket.count}"></option>
+                                </th:block>
+                            </select>
+                            <button class="btn btn-outline-info">수정</button>
+                        </div>
+                    </form>
+                    <form action="/itemBasket/delete.do" method="post">
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                <input class="form-check-input mt-0" type="checkbox" name="basketNum" th:value="${basket.basketNum}">
+                            </div>
+                            <button class="form-control btn btn-outline-danger">삭제</button>
+                        </div>
+                    </form>
+                </td>
+                <tr th:with="totalSum=${totalSum + itemTotal}">
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" style="text-align: right;"><strong>총합계:</strong></td>
+                <td th:text="${totalSum}"></td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>

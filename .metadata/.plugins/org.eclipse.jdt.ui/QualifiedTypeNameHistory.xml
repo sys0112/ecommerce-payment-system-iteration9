@@ -7,10 +7,11 @@
     <fullyQualifiedTypeName name="jakarta.persistence.Column"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RestController"/>
     <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
-    <fullyQualifiedTypeName name="com.simple.StES.vo.memVo"/>
     <fullyQualifiedTypeName name="com.simple.StES.repository.memRepository"/>
     <fullyQualifiedTypeName name="org.springframework.ui.Model"/>
     <fullyQualifiedTypeName name="java.lang.String"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
+    <fullyQualifiedTypeName name="com.simple.StES.repository.basketRepository"/>
+    <fullyQualifiedTypeName name="com.simple.StES.vo.memVo"/>
 </qualifiedTypeNameHistroy>

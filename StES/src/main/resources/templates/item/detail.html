@@ -1,0 +1,133 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+</head>
+<title>Insert title here</title>
+
+<style>
+
+.product> .MAIN_IMG{
+    float: left;
+    width: 500px;
+    height: 500px;
+}
+
+.product> .input-group {
+    width: 200px;
+}
+
+.product> form {
+    float: left;
+    margin-right: 10px;
+}
+
+</style>
+
+<body>  
+        <header th:insert="header_nav.html"></header>
+       
+        <main th:each="item:${boardTest}">
+        <div>
+        <section>
+             
+            <ul class="product_list_container" id="productList" >
+                
+            <ul class="product">
+            <img class="MAIN_IMG" src="" alt="" th:src="@{/public/img/{img}(img=${item.mainImg})}" >
+            <p style="font-size:200%" th:text="${item.name}"></p>  
+            <p style="font-size:200%" th:text="|${#numbers.formatInteger(item.price, 3, 'COMMA')}원|"></p> 
+            <p>
+						<form action="/itemBasket/insert.do" method="post">
+							<input type="hidden" name="itemNum" th:value="${item.itemNum}">
+							<div>
+							  <select name="count">
+							    <option selected value="1">1</option>
+							    <option value="2">2</option>
+							    <option value="3">3</option>
+							    <option value="4">4</option>
+							  </select>
+							  <button class="btn btn-outline-primary" type="submit">장바구니 추가</button>
+							</div>
+						</form>
+						      <button class="btn btn-outline-danger">바로구매</button>
+			</p> 
+            </ul>
+               
+               
+            </ul>
+  
+            
+        </section>
+        </div>
+        
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li class="nav-item" role="presentation">
+			<button class="nav-link active" id="userinfo-tab" data-bs-toggle="tab"
+				data-bs-target="#userinfo" type="button" role="tab" aria-controls="userinfo"
+				aria-selected="true">회원정보</button>
+		</li>
+		<li class="nav-item" role="presentation">
+			<button class="nav-link" id="myreview-tab" data-bs-toggle="tab"
+				data-bs-target="#myreview" type="button" role="tab"
+				aria-controls="myreview" aria-selected="false">내리뷰목록</button>
+		</li>
+		<li class="nav-item" role="presentation">
+			<button class="nav-link" id="wishlist-tab" data-bs-toggle="tab"
+				data-bs-target="#wishlist" type="button" role="tab"
+				aria-controls="wishlist" aria-selected="false">위시리스트</button>
+		</li>
+	    </ul>
+	
+		<!-- 내용 -->
+		<div class="tab-content" id="myTabContent">
+			<div class="tab-pane fade show active" id="userinfo" role="tabpanel"
+				aria-labelledby="userinfo-tab"><img th:src="@{/public/img/{img}(img=${item.mainImg})}"></img></div>
+			<div class="tab-pane fade" id="myreview" role="tabpanel"
+				aria-labelledby="myreview-tab">내리뷰리스트 탭</div>
+			<div class="tab-pane fade" id="wishlist" role="tabpanel"
+				aria-labelledby="wishlist-tab">위시리스트 탭</div>
+		</div>
+            
+        </main>
+		
+		
+
+</body>
+
+<script>
+let key = "${param.key}";
+console.log(key);
+if(key === "userinfo"){
+	
+	$("#myreview-tab").removeClass("active");
+	$("#wishlist-tab").removeClass("active");
+	$("#userinfo-tab").addClass("active");
+	
+	$("#myreview").removeClass("show active");
+	$("#wishlist").removeClass("show active");
+	$("#userinfo").addClass("show active");
+	
+}else if(key === "myreview"){
+	
+	$("#wishlist-tab").removeClass("active");
+	$("#userinfo-tab").removeClass("active");
+	$("#myreview-tab").addClass("active");
+	
+	$("#userinfo").removeClass("show active");
+	$("#wishlist").removeClass("show active");
+	$("#myreview").addClass("show active");
+	
+}else if(key === "wishlist"){
+	
+	$("#userinfo-tab").removeClass("active");
+	$("#myreview-tab").removeClass("active");
+	$("#wishlist-tab").addClass("active");
+	
+	$("#myreview").removeClass("show active");
+	$("#userinfo").removeClass("show active");
+	$("#wishlist").addClass("show active");
+	
+}
+</script>
+
+</html>

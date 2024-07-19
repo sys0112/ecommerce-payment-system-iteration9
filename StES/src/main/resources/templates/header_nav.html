@@ -40,7 +40,12 @@
 						<span th:text="${session.memVo?.name}"></span>
 						님
 						&nbsp;/&nbsp;
-						
+						<a  class="btn btn-outline-primary position-relative"	href="/itemBasket/list.do">
+							장바구니
+							<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+								th:text=${session.memVo?.basketCount}>
+							</span>
+						</a>
 						&nbsp;/&nbsp;
 						<a 	href="/mem/logout">
 							로그아웃
