@@ -45,6 +45,13 @@ public class itemController {
 		return "/item/list";
 	}
 	
+	@GetMapping("/orderform")
+	public String order(Model model){
+		return "/itemBasket/order_form";
+	}
+	
+	
+	
 	@GetMapping("/view/{itemNum}")
 	public String boardd(Model model, @PathVariable("itemNum") Integer itemNum){
 		System.out.println(itemNum);
