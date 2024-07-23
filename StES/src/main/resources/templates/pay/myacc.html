@@ -1,0 +1,26 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+<body>
+       <table class="table">
+			<thead>
+				<tr>
+					<th>pay_num</th>
+					<th>payname</th>
+					<th>count</th>
+					<th>price</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="pay:${payList}">
+				    <td th:text="${pay.pay_num}"></td>
+					<td th:text="${pay.payname}"></td>
+					<td th:text="${pay.count}"></td>
+					<td th:text="${pay.price}"></td>					
+				</tr>		
+			</tbody>
+		</table>
+</body>
+</html>

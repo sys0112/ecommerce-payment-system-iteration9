@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example Page</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Item List</h1>
+    <div id="itemList"></div>
+
+    <script th:inline="javascript">
+        
+        var itemListJson = /*[[${itemListJson}]]*/ '[]';
+        var itemList = JSON.parse(itemListJson);
+
+        console.log(itemList);
+
+       
+    </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제 폼</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+</head>
+<body>
+<header th:insert="header_nav.html"></header>
+    <h1>결제하기</h1>
+    <table>
+        <tr>
+            <td colspan="5" style="text-align: right;"><strong>총합계:</strong></td>
+            <td id="totalSum" th:text="${totalSum}"></td>
+        </tr>
+    </table>
+    <button id="cardPayButton">신용카드 결제</button>
+    <button id="phonePayButton">휴대폰 소액결제</button>
+
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+        var IMP = window.IMP;
+        IMP.init('imp78251645'); // 가맹점 식별코드
+
+        
+        var basketListJson = /*[[${basketListJson}]]*/ '[]';
+        
+        var basketList = JSON.parse(basketListJson);
+        
+        console.log(basketList);
+        
+        var totalSum = parseFloat(document.getElementById('totalSum').innerText.trim().replace(/,/g, ''));
+        
+        function requestPay(payMethod) {
+        	
+        	var items = basketList.map(function(basket) {
+                return {
+                	name: basket.name,
+                    count: basket.count,
+                    price: basket.price
+                };
+            });
+        	
+        	console.log("Mapped items:", items);
+        	
+        	
+        	var goodsname = items.map(item => item.name + ' x ' + item.count).join(', ');
+            console.log("item count (for debugging):", goodsname);
+        	
+            IMP.request_pay({
+                pg: 'html5_inicis', // 사용할 PG사
+                pay_method: payMethod, // 결제 수단
+                merchant_uid: 'order_' + new Date().getTime(), // 주문 ID
+                amount: totalSum, // 결제 금액
+                buyer_email: 'buyer@example.com', // 구매자 이메일
+                buyer_name: '구매자', // 구매자 이름
+                buyer_tel: '010-1234-5678', // 구매자 전화번호
+                buyer_addr: '서울특별시 강남구 삼성동', // 구매자 주소
+                buyer_postcode: '123-456', // 구매자 우편번호
+                goodsname: goodsname
+            }, function (rsp) {
+                if (rsp.success) {
+                    var msg = '결제가 완료되었습니다.';
+                    alert(msg);
+                    
+                    $.ajax({
+                        url: '/payments/save',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(items),
+                        success: function(response) {
+                            console.log('결제 정보 저장 성공:', response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('결제 정보 저장 실패:', error);
+                        }
+                    });    
+                 
+                
+                } else {
+                    alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);
+                }
+            });
+        }
+
+        document.getElementById('cardPayButton').addEventListener('click', function() {
+            requestPay('card');
+        });
+
+        document.getElementById('phonePayButton').addEventListener('click', function() {
+            requestPay('phone');
+        });
+        /*]]>*/
+    </script>
+</body>
+</html>
