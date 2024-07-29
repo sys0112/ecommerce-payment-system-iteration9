@@ -18,6 +18,8 @@ public class payVo {
 	private String payname;
 	private int count;
 	private int price;
+	@Column(name = "member_id")
+	private String memberId;
 	
 	public Integer getPay_num() {
 		return pay_num;
@@ -43,11 +45,24 @@ public class payVo {
 	public void setPrice(int price) {
 		this.price = price;
 	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
 	
 	@Override
 	public String toString() {
-		return "payVo [pay_num=" + pay_num + ", payname=" + payname + ", count=" + count + ", price=" + price + "]";
+		return "payVo [pay_num=" + pay_num + ", payname=" + payname + ", count=" + count + ", price=" + price
+				+ ", memberId=" + memberId + "]";
 	}
+
+	
+	
+
+	
+
 	
 	
 

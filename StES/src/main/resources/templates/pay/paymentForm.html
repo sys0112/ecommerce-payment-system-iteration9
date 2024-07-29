@@ -6,16 +6,84 @@
     <title>결제 폼</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
     <script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+	function daumPost(){
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+	            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+	            
+	            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+	            var addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
+	            document.getElementById('postcode').value = data.zonecode
+	            document.getElementById('address').value = addr
+	            document.getElementById('detailAddress').focus()
+	        }
+	    }).open();
+	}
+	
+	function resetForm() {
+        document.getElementById('postcode').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('detailAddress').value = '';
+        // 필요한 경우 다른 폼 필드도 초기화 가능
+    }
+	
+	 function saveAddress() {
+	        var addressData = {
+	            postcode: document.getElementById('postcode').value,
+	            address: document.getElementById('address').value,
+	            detailAddress: document.getElementById('detailAddress').value
+	        };
+	        
+	        $.ajax({
+	            url: '/payments/saveAddress',
+	            type: 'POST',
+	            contentType: 'application/json',
+	            data: JSON.stringify(addressData),
+	            success: function(response) {
+	                alert('주소가 저장되었습니다.');
+	                console.log('주소 저장 성공:', response);
+	            },
+	            error: function(xhr, status, error) {
+	                console.error('주소 저장 실패:', error);
+	            }
+	        });
+	    }
+</script>
 </head>
 <body>
 <header th:insert="header_nav.html"></header>
     <h1>결제하기</h1>
+    <h2>구매자 정보</h2>
     <table>
+        <tr>
+            <td><strong>아이디:</strong></td>
+            <td th:text="${memVo.id}"></td>
+        </tr>
+        <tr>
+            <td><strong>이름:</strong></td>
+            <td th:text="${memVo.name}"></td>
+        </tr>
+        <tr>
+            <td><strong>폰 번호:</strong></td>
+            <td th:text="${memVo.phone}"></td>
+        </tr>
         <tr>
             <td colspan="5" style="text-align: right;"><strong>총합계:</strong></td>
             <td id="totalSum" th:text="${totalSum}"></td>
         </tr>
     </table>
+    
+    <h2>배송지 정보</h2>
+    <input type="text" id="postcode" placeholder="우편번호" readonly="readonly">
+    <input type="button" onclick="daumPost()" value="우편번호 찾기"><br>
+    <input type="text" id="address" placeholder="주소"><br>
+    <input type="text" id="detailAddress" placeholder="상세주소"><br>
+    <input type="button" value="돌아가기" onclick="resetForm()"><br>
+    <input type="button" value="주소 저장" onclick="saveAddress()"><br>
+    
     <button id="cardPayButton">신용카드 결제</button>
     <button id="phonePayButton">휴대폰 소액결제</button>
 

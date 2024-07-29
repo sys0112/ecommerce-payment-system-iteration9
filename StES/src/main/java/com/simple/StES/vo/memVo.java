@@ -26,9 +26,10 @@ public class memVo {
 	private String pw;             
 	private String phone;          
 	private String email;          
-	private String name;           
+	private String name;  
 	private String address;
-	private String address_detail; 
+	@Column(name = "address_detail")
+	private String addressDetail; 
 	
 	@Formula(value = "(SELECT COUNT(b.count) FROM item_basket b WHERE b.member_id=id)")//subquery
 	Integer basketCount;
@@ -82,17 +83,19 @@ public class memVo {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getAddress_detail() {
-		return address_detail;
+    
+	public String getAddressDetail() {
+		return addressDetail;
 	}
-	public void setAddress_detail(String address_detail) {
-		this.address_detail = address_detail;
+	public void setAddressDetail(String addressDetail) {
+		this.addressDetail = addressDetail;
 	}
 	
 	@Override
 	public String toString() {
 		return "memVo [Mnum=" + Mnum + ", id=" + id + ", pw=" + pw + ", phone=" + phone + ", email=" + email + ", name="
-				+ name + ", address=" + address + ", address_detail=" + address_detail + "]";
+				+ name + ", address=" + address + ", addressDetail=" + addressDetail + ", basketCount=" + basketCount
+				+ "]";
 	}
 
 

@@ -2,6 +2,7 @@ package com.simple.StES.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.simple.StES.vo.memVo;
 
@@ -65,6 +70,38 @@ public class memController {
 	}
 	
 	
+	@GetMapping("/signup")
+	public ModelAndView signup(ModelAndView model) { // 맨위 public String login이랑 비교하면됨.
+		model.setViewName("/mem/signup");
+		return model;
+	}
+	
+//	@PostMapping("/signup")
+//	public String singup(memVo memVo, HttpSession session) {
+//		boolean insert=false;
+//		try {
+//			Optional<memVo> memOption=mr.findById(memVo.getId()); // 기본으로 제공되는 함수
+//			if(memOption.isEmpty()) { // 있는지 검사해서 없을때만 저장
+//				memVo insertMem=mr.save(memVo);
+//				System.out.println(insertMem);
+//				if(insertMem!=null) {
+//					insert=true;
+//				}else {
+//					session.setAttribute("msg", "존재하는 아이디입니다.");
+//				}
+//			}
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			session.setAttribute("msg", "Email 또는 Phone이 이미 존재합니다.");
+//		}
+//		if(insert) {
+//			return "redirect:/";			
+//		}else {
+//			return "redirect:/mem/signup";
+//		}
+//	}
+	
+	
 	@GetMapping(value="/find-username")
     public String findUsernameByEmail() {
 		return "/mem/idfound";
@@ -80,7 +117,7 @@ public class memController {
 
         return ResponseEntity.ok(user.getId());
     }
-	
+//	
 	@GetMapping("/request-password-reset")
 	public String requestPasswordReset() {
 	    return "/mem/passwordreset";
@@ -119,6 +156,19 @@ public class memController {
 		return "redirect:/";
 	}
 	
+	
+//	@GetMapping("/ajax/findId/{id}")
+//	public @ResponseBody Optional<memVo> findId(@PathVariable("id") String id) {
+//		return mr.findById(id);
+//	}
+//	@GetMapping("/ajax/findEmail/{email}")
+//	public @ResponseBody Optional<memVo> findEmail(@PathVariable("email") String email){
+//		return mr.findByEmail(email);
+//	}
+//	@GetMapping("/ajax/findPhone/{phone}")
+//	public @ResponseBody Optional<memVo> findByPhone(@PathVariable("phone") String phone){
+//		return mr.findByPhone(phone);
+//	}
 	
 }
 
