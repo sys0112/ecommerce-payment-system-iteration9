@@ -20,6 +20,13 @@ public class payVo {
 	private int price;
 	@Column(name = "member_id")
 	private String memberId;
+	private String address;
+	private String postcode;
+	private String detailAddress;
+	private String buyerName;
+	private String buyerTel;
+	private String paymentMethod;
+	
 	
 	public Integer getPay_num() {
 		return pay_num;
@@ -51,13 +58,55 @@ public class payVo {
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getPostcode() {
+		return postcode;
+	}
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+	public String getDetailAddress() {
+		return detailAddress;
+	}
+	public void setDetailAddress(String detailAddress) {
+		this.detailAddress = detailAddress;
+	}
+	public String getBuyerName() {
+		return buyerName;
+	}
+	public void setBuyerName(String buyerName) {
+		this.buyerName = buyerName;
+	}
+	public String getBuyerTel() {
+		return buyerTel;
+	}
+	public void setBuyerTel(String buyerTel) {
+		this.buyerTel = buyerTel;
+	}
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
 	
 	@Override
 	public String toString() {
 		return "payVo [pay_num=" + pay_num + ", payname=" + payname + ", count=" + count + ", price=" + price
-				+ ", memberId=" + memberId + "]";
+				+ ", memberId=" + memberId + ", address=" + address + ", postcode=" + postcode + ", detailAddress="
+				+ detailAddress + ", buyerName=" + buyerName + ", buyerTel=" + buyerTel + ", paymentMethod="
+				+ paymentMethod + "]";
 	}
 
+	
+	
+
+	
 	
 	
 

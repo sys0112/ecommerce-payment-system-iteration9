@@ -8,7 +8,6 @@
     <fullyQualifiedTypeName name="org.springframework.ui.Model"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
-    <fullyQualifiedTypeName name="com.simple.StES.repository.basketRepository"/>
     <fullyQualifiedTypeName name="com.simple.StES.repository.payRepository"/>
     <fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
     <fullyQualifiedTypeName name="java.util.Map"/>
@@ -19,4 +18,7 @@
     <fullyQualifiedTypeName name="com.simple.StES.Service.MemberService"/>
     <fullyQualifiedTypeName name="com.simple.StES.repository.memRepository"/>
     <fullyQualifiedTypeName name="jakarta.servlet.http.HttpSession"/>
+    <fullyQualifiedTypeName name="com.simple.StES.controller.PaymentController.AddressRequest"/>
+    <fullyQualifiedTypeName name="com.simple.StES.DTO.PayRequest"/>
+    <fullyQualifiedTypeName name="com.simple.StES.repository.basketRepository"/>
 </qualifiedTypeNameHistroy>

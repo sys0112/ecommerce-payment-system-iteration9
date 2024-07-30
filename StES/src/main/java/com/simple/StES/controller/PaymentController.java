@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simple.StES.DTO.AddressDTO;
 import com.simple.StES.Service.IamportService;
 import com.simple.StES.Service.MemberService;
+import com.simple.StES.Service.basketService;
 import com.simple.StES.repository.basketRepository;
 import com.simple.StES.repository.memRepository;
 import com.simple.StES.repository.payRepository;
@@ -23,6 +24,8 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.simple.StES.DTO.PayRequest;
 
 @Controller
 @RequestMapping("/payments")
@@ -131,86 +134,34 @@ public class PaymentController {
     
     
     @PostMapping("/save")
-    public String savePayments(@RequestBody List<PayRequest> payRequests, HttpSession session) {
-    	memVo memVo=(memVo)session.getAttribute("memVo");
-        for (PayRequest payRequest : payRequests) {
-            payVo pay = new payVo();
-            pay.setPayname(payRequest.getName());
-            pay.setCount(payRequest.getCount());
-            pay.setPrice(payRequest.getPrice());
-            pay.setMemberId(memVo.getId());
-            pr.save(pay);
-        }
+    @ResponseBody
+    public String savePayments(@RequestBody PayRequest payRequest, HttpSession session) {
+        // 세션에서 사용자 정보 가져오기
+        memVo memVo = (memVo) session.getAttribute("memVo");
 
-        return "redirect:/";
+        for (PayRequest.Item item : payRequest.getItems()) {
+        // 결제 정보 저장
+        payVo pay = new payVo();
+        pay.setPayname(item.getName()); // 예시로 첫 번째 아이템의 이름을 사용
+        pay.setCount(item.getCount()); // 예시로 첫 번째 아이템의 개수를 사용
+        pay.setPrice(item.getPrice()); // 예시로 첫 번째 아이템의 가격을 사용
+        pay.setMemberId(memVo.getId()); // 사용자 아이디 저장
+        pay.setAddress(payRequest.getAddress().getAddress());
+        pay.setPostcode(payRequest.getAddress().getPostcode());
+        pay.setDetailAddress(payRequest.getAddress().getDetailAddress());
+        pay.setBuyerName(payRequest.getBuyerName());
+        pay.setBuyerTel(payRequest.getBuyerTel());
+        pay.setPaymentMethod(payRequest.getPaymentMethod());
+
+        pr.save(pay);
+        }
+        
+     // 장바구니 리스트 삭제
+//        basketService.clearBasketForUser(memVo.getId());
+        
+        return "redirect:/payment-success";
     }
    
-    
- // RequestBody 클래스 정의
-    static class PayRequest {
-        private String name;
-        private int count;
-        private int price;
-
-        
-        public PayRequest() {
-        }
-
-        
-        public PayRequest(String name, int count, int price) {
-            this.name = name;
-            this.count = count;
-            this.price = price;
-        }
-
-
-
-		public String getName() {
-			return name;
-		}
-
-
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-
-
-		public int getCount() {
-			return count;
-		}
-
-
-
-		public void setCount(int count) {
-			this.count = count;
-		}
-
-
-
-		public int getPrice() {
-			return price;
-		}
-
-
-
-		public void setPrice(int price) {
-			this.price = price;
-		}
-        
-        
-    }
-    
-    
-    @GetMapping("/myshop")
-    public String myshop(Model model, HttpSession session) {
-    	memVo memVo=(memVo)session.getAttribute("memVo");
-        List<payVo> payList = pr.findByMemberId(memVo.getId());
-        
-        model.addAttribute("payList", payList);
-        return "pay/myacc";
-    }
     
     
     @PostMapping("/saveAddress")
@@ -232,6 +183,14 @@ public class PaymentController {
     }
     
     
+    @GetMapping("/myshop")
+    public String myshop(Model model, HttpSession session) {
+    	memVo memVo=(memVo)session.getAttribute("memVo");
+        List<payVo> payList = pr.findByMemberId(memVo.getId());
+        
+        model.addAttribute("payList", payList);
+        return "pay/myacc";
+    }
     
     
 

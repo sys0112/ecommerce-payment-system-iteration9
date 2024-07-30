@@ -64,11 +64,11 @@
         </tr>
         <tr>
             <td><strong>이름:</strong></td>
-            <td th:text="${memVo.name}"></td>
+            <td id="buyerName" th:text="${memVo.name}"></td>
         </tr>
         <tr>
             <td><strong>폰 번호:</strong></td>
-            <td th:text="${memVo.phone}"></td>
+            <td id="buyerTel" th:text="${memVo.phone}"></td>
         </tr>
         <tr>
             <td colspan="5" style="text-align: right;"><strong>총합계:</strong></td>
@@ -116,36 +116,61 @@
         	
         	var goodsname = items.map(item => item.name + ' x ' + item.count).join(', ');
             console.log("item count (for debugging):", goodsname);
-        	
+            
+         // 구매자 정보 가져오기
+            var buyerName = document.getElementById('buyerName').innerText.trim();
+            var buyerTel = document.getElementById('buyerTel').innerText.trim();
+            var postcode = document.getElementById('postcode').value;
+            var address = document.getElementById('address').value;
+            var detailAddress = document.getElementById('detailAddress').value;
+            
+            console.log("buyerName:", buyerName);
+            console.log("buyerTel:", buyerTel);
+            console.log("payMethod:", payMethod);
+            
             IMP.request_pay({
                 pg: 'html5_inicis', // 사용할 PG사
                 pay_method: payMethod, // 결제 수단
                 merchant_uid: 'order_' + new Date().getTime(), // 주문 ID
                 amount: totalSum, // 결제 금액
                 buyer_email: 'buyer@example.com', // 구매자 이메일
-                buyer_name: '구매자', // 구매자 이름
-                buyer_tel: '010-1234-5678', // 구매자 전화번호
-                buyer_addr: '서울특별시 강남구 삼성동', // 구매자 주소
-                buyer_postcode: '123-456', // 구매자 우편번호
+                buyer_name: buyerName, // 구매자 이름
+                buyer_tel: buyerTel, // 구매자 전화번호
+                buyer_addr: address, // 구매자 주소
+                buyer_postcode: postcode, // 구매자 우편번호
                 goodsname: goodsname
+              
+                
             }, function (rsp) {
                 if (rsp.success) {
                     var msg = '결제가 완료되었습니다.';
                     alert(msg);
+              
+                    var paymentInfo = {
+                            paymentMethod: payMethod,
+                            buyerName: rsp.buyer_name,
+                            buyerTel: rsp.buyer_tel,
+                            items: items,
+                            address: {
+                                postcode: postcode,
+                                address: address,
+                                detailAddress: detailAddress
+                            }
+                        };
                     
                     $.ajax({
                         url: '/payments/save',
                         type: 'POST',
                         contentType: 'application/json',
-                        data: JSON.stringify(items),
+                        data: JSON.stringify(paymentInfo),
                         success: function(response) {
                             console.log('결제 정보 저장 성공:', response);
                         },
                         error: function(xhr, status, error) {
                             console.error('결제 정보 저장 실패:', error);
                         }
-                    });    
-                 
+                    });
+                    
                 
                 } else {
                     alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);

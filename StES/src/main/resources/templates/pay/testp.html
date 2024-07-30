@@ -1,40 +1,73 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
-	function daumPost(){
-	    new daum.Postcode({
-	        oncomplete: function(data) {
-	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-	            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
-	            
-	            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-	            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-	                addr = data.roadAddress;
-	            } else { // 사용자가 지번 주소를 선택했을 경우(J)
-	                addr = data.jibunAddress;
-	            }
-	            document.getElementById('postcode').value = data.zonecode
-	            document.getElementById('address').value = addr
-	            document.getElementById('detailAddress').focus()
-	        }
-	    }).open();
-	}
-</script>
-<body>
-      <header th:insert="header_nav.html"></header>
-      
-<input type="text" id="postcode" placeholder="우편번호" readonly="readonly">
-<input type="button" onclick="daumPost()" value="우편번호 찾기"><br>
-<input type="text" id="address" placeholder="주소"><br>
-<input type="text" id="detailAddress" placeholder="상세주소">
-<input type="button" value="돌아가기" onclick="location.href='main'">
+var paymentInfo = {
+                            paymentMethod: payMethod,
+                            buyerName: rsp.buyer_name,
+                            buyerTel: rsp.buyer_tel,
+                            items: items
+                        };
+                        
+                        
+                                public PayRequest(String name, int count, int price, String buyerName, String buyerTel, String paymentMethod) {
+            this.name = name;
+            this.count = count;
+            this.price = price;
+            this.buyerName = buyerName;
+            this.buyerTel = buyerTel;
+            this.paymentMethod = paymentMethod;
+        }
+        
+        
+            @PostMapping("/saveAddressToPayVo")
+    public String addressPayments(@RequestBody List<AddressRequest> addressRequests, HttpSession session) {
+    	memVo memVo=(memVo)session.getAttribute("memVo");
+    	for (AddressRequest addressRequest : addressRequests) {
+            payVo pay = new payVo();
+            pay.setPostcode(addressRequest.getPostcode());
+            pay.setAddress(addressRequest.getAddress());
+            pay.setDetailAddress(addressRequest.getDetailAddress());
+            pr.save(pay);
+    	}
+        return "redirect:/";
+    }
+    
+    
+    static class AddressRequest {
+        private String postcode;
+        private String address;
+        private String detailAddress;
+    
+        
+        public AddressRequest() {
+        }
+        
+        public AddressRequest(String postcode, String address, String detailAddress) {
+            this.postcode = postcode;
+            this.address = address;
+            this.detailAddress = detailAddress;
+        }
 
+		public String getPostcode() {
+			return postcode;
+		}
 
-</body>
+		public void setPostcode(String postcode) {
+			this.postcode = postcode;
+		}
 
-</html>
+		public String getAddress() {
+			return address;
+		}
+
+		public void setAddress(String address) {
+			this.address = address;
+		}
+
+		public String getDetailAddress() {
+			return detailAddress;
+		}
+
+		public void setDetailAddress(String detailAddress) {
+			this.detailAddress = detailAddress;
+		}
+        
+        
+    }
