@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제 성공</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .success-message {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .order-details {
+            margin-top: 20px;
+        }
+        .order-details p {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <header th:insert="header_nav.html"></header>
+    <h1 class="success-message">결제가 성공적으로 완료되었습니다!</h1>
+    <div class="order-details">
+        <p>주문 번호: <span id="orderNumber">order_1234567890</span></p>
+        <p>주문 내역은 이메일로 발송되었습니다.</p>
+        <p>이용해 주셔서 감사합니다!</p>
+    </div>
+    <button onclick="window.location.href='/'">홈으로 돌아가기</button>
+</body>
+</html>

@@ -1,26 +1,48 @@
+<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-    <head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	</head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제 내역</title>
+    <style>
+        .tab-container {
+            margin-top: 20px;
+        }
+        .tab-links {
+            cursor: pointer;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+            display: inline-block;
+        }
+    </style>
+</head>
 <body>
-       <table class="table">
-			<thead>
-				<tr>
-					<th>pay_num</th>
-					<th>payname</th>
-					<th>count</th>
-					<th>price</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="pay:${payList}">
-				    <td th:text="${pay.pay_num}"></td>
-					<td th:text="${pay.payname}"></td>
-					<td th:text="${pay.count}"></td>
-					<td th:text="${pay.price}"></td>					
-				</tr>		
-			</tbody>
-		</table>
+    <div th:each="group : ${groupedPayList}">
+        <h3 th:text="${#temporals.format(group.payTime, 'yyyy-MM-dd HH:mm:ss')}"></h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>pay_num</th>
+                    <th>payname</th>
+                    <th>count</th>
+                    <th>price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="pay : ${group.pays}">
+                    <td th:text="${pay.payNum}"></td>
+                    <td th:text="${pay.payname}"></td>
+                    <td th:text="${pay.count}"></td>
+                    <td th:text="${pay.price}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <a th:href="@{/payments/detailsGroup(payTime=${#temporals.format(group.payTime, 'yyyy-MM-dd') + 'T' + #temporals.format(group.payTime, 'HH:mm:ss')})}" target="_blank" class="tab-links">상세보기</a>  
+        </div>
+    </div>
 </body>
 </html>

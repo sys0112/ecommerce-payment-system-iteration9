@@ -1,5 +1,8 @@
 package com.simple.StES.vo;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +17,8 @@ public class payVo {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer pay_num;
+	@Column(name = "pay_num")
+	private Integer payNum;
 	private String payname;
 	private int count;
 	private int price;
@@ -26,13 +30,15 @@ public class payVo {
 	private String buyerName;
 	private String buyerTel;
 	private String paymentMethod;
+	@Column(name = "pay_time")
+	private LocalDateTime payTime;
 	
 	
-	public Integer getPay_num() {
-		return pay_num;
+	public Integer getPayNum() {
+		return payNum;
 	}
-	public void setPay_num(Integer pay_num) {
-		this.pay_num = pay_num;
+	public void setPayNum(Integer payNum) {
+		this.payNum = payNum;
 	}
 	public String getPayname() {
 		return payname;
@@ -94,25 +100,20 @@ public class payVo {
 	public void setPaymentMethod(String paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
+	public LocalDateTime getPayTime() {
+		return payTime;
+	}
+	public void setPayTime(LocalDateTime payTime) {
+		this.payTime = payTime;
+	}
 	
 	@Override
 	public String toString() {
-		return "payVo [pay_num=" + pay_num + ", payname=" + payname + ", count=" + count + ", price=" + price
+		return "payVo [payNum=" + payNum + ", payname=" + payname + ", count=" + count + ", price=" + price
 				+ ", memberId=" + memberId + ", address=" + address + ", postcode=" + postcode + ", detailAddress="
 				+ detailAddress + ", buyerName=" + buyerName + ", buyerTel=" + buyerTel + ", paymentMethod="
-				+ paymentMethod + "]";
+				+ paymentMethod + ", payTime=" + payTime + "]";
 	}
-
-	
-	
-
-	
-	
-	
-
-	
-
-	
 	
 
 }

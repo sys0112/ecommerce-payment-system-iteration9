@@ -24,8 +24,10 @@ public class PayRequest {
 
     public Item[] getItems() { return items; }
     public void setItems(Item[] items) { this.items = items; }
-    
-    public static class Address {
+
+
+
+	public static class Address {
         private String postcode;
         private String address;
         private String detailAddress;

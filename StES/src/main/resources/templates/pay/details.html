@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상세 정보</title>
+</head>
+<body>
+    <h2>주문 상세 정보</h2>
+    <div th:if="${pay != null}">
+        <p><strong>이름:</strong> <span th:text="${pay.buyerName != null ? pay.buyerName : '정보 없음'}"></span></p>
+        <p><strong>전화번호:</strong> <span th:text="${pay.buyerTel != null ? pay.buyerTel : '정보 없음'}"></span></p>
+        <p><strong>주소:</strong> <span th:text="${pay.address != null ? pay.address : '정보 없음'}"></span>, <span th:text="${pay.postcode != null ? pay.postcode : '정보 없음'}"></span></p>
+        <p><strong>결제수단:</strong> <span th:text="${pay.paymentMethod != null ? pay.paymentMethod : '정보 없음'}"></span></p>
+        <p><strong>총 결제금액:</strong> <span th:text="${pay.price != null ? pay.price : '정보 없음'}"></span></p>
+    </div>
+    <div th:if="${pay == null}">
+        <p>해당 주문의 상세 정보를 찾을 수 없습니다.</p>
+    </div>
+</body>
+</html>

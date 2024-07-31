@@ -1,6 +1,7 @@
 package com.simple.StES.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,8 @@ import com.simple.StES.vo.payVo;
 
 import jakarta.servlet.http.HttpSession;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,6 +45,9 @@ public class PaymentController {
 	
 	@Autowired
     private MemberService memberService;
+	
+	@Autowired
+    private basketService basketService;
 
     
     @GetMapping("/form")
@@ -138,6 +144,12 @@ public class PaymentController {
     public String savePayments(@RequestBody PayRequest payRequest, HttpSession session) {
         // 세션에서 사용자 정보 가져오기
         memVo memVo = (memVo) session.getAttribute("memVo");
+        
+        // 현재 시간을 가져옴
+        LocalDateTime now = LocalDateTime.now();
+        
+        // 밀리초를 제거하고 초까지만 남김
+        LocalDateTime truncatedNow = now.truncatedTo(ChronoUnit.SECONDS);
 
         for (PayRequest.Item item : payRequest.getItems()) {
         // 결제 정보 저장
@@ -152,17 +164,22 @@ public class PaymentController {
         pay.setBuyerName(payRequest.getBuyerName());
         pay.setBuyerTel(payRequest.getBuyerTel());
         pay.setPaymentMethod(payRequest.getPaymentMethod());
+        pay.setPayTime(truncatedNow);
 
         pr.save(pay);
         }
         
      // 장바구니 리스트 삭제
-//        basketService.clearBasketForUser(memVo.getId());
+        basketService.clearBasketForUser(memVo.getId());
         
-        return "redirect:/payment-success";
+        return "결제 성공";
+    }
+    
+    @GetMapping("/payment_success")
+    public String paymentSuccess() {
+        return "payment_success"; // 성공 페이지로 이동
     }
    
-    
     
     @PostMapping("/saveAddress")
     public String saveAddress(@RequestBody AddressDTO address, HttpSession session) {
@@ -188,10 +205,63 @@ public class PaymentController {
     	memVo memVo=(memVo)session.getAttribute("memVo");
         List<payVo> payList = pr.findByMemberId(memVo.getId());
         
-        model.addAttribute("payList", payList);
+     // pay_time을 년, 월, 일, 시, 분, 초 단위로 그룹화, null 값에 대해 기본값 설정
+        Map<LocalDateTime, List<payVo>> groupedByPayTime = payList.stream()
+            .collect(Collectors.groupingBy(pay -> {
+                LocalDateTime payTime = pay.getPayTime();
+                if (payTime == null) {
+                    return LocalDateTime.MIN; // 기본값 설정 (null인 경우)
+                } else {
+                    return LocalDateTime.of(
+                        payTime.getYear(),
+                        payTime.getMonth(),
+                        payTime.getDayOfMonth(),
+                        payTime.getHour(),
+                        payTime.getMinute(),
+                        payTime.getSecond()
+                    );
+                }
+            }));
+
+        // 모델에 데이터를 추가
+        model.addAttribute("groupedPayList", groupedByPayTime.entrySet().stream()
+            .map(entry -> new PayGroup(entry.getKey(), entry.getValue()))
+            .collect(Collectors.toList()));
+        
         return "pay/myacc";
     }
     
+    public static class PayGroup {
+        private LocalDateTime payTime;
+        private List<payVo> pays;
+
+        public PayGroup(LocalDateTime payTime, List<payVo> pays) {
+            this.payTime = payTime;
+            this.pays = pays;
+        }
+
+        public LocalDateTime getPayTime() {
+            return payTime;
+        }
+
+        public List<payVo> getPays() {
+            return pays;
+        }
+    }
+    
+    
+
+    
+    @GetMapping("/detailsGroup")
+    public String detailsGroup(@RequestParam("payTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime payTime, Model model) {
+        // Fetch all payments that share the same payTime
+        List<payVo> payList = pr.findByPayTime(payTime);
+        
+        
+        model.addAttribute("payList", payList);
+        model.addAttribute("payTime", payTime);
+        return "pay/detailsGroup";
+    }
     
 
 }
