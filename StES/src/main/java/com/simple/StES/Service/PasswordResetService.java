@@ -1,6 +1,7 @@
 package com.simple.StES.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class PasswordResetService {
     private JavaMailSender mailSender;
 
     public void createPasswordResetToken(String userEmail) {
-        memVo user = userRepository.findByEmail(userEmail);
+        Optional<memVo> user = userRepository.findByEmail(userEmail);
         if (user == null) {
             throw new RuntimeException("User not found1");
         }
@@ -58,10 +59,20 @@ public class PasswordResetService {
             throw new RuntimeException("Invalid or expired token11");
         }
 
-        memVo user = userRepository.findByEmail(resetToken.getUserEmail());
-        user.setPw(newPassword);  // 비밀번호는 해싱하여 저장하는 것이 좋습니다.
+        Optional<memVo> userOptional = userRepository.findByEmail(resetToken.getUserEmail());
+        if (!userOptional.isPresent()) {
+            throw new RuntimeException("User not found");
+        }
+
+        memVo user = userOptional.get();
+        
+        // 비밀번호 해싱
+        user.setPw(newPassword);
+        
         userRepository.save(user);
         tokenRepository.delete(resetToken);
     }
+    
+
 
 }

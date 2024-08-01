@@ -4,15 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상세 정보</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const uniquePays = new Set();
+            document.querySelectorAll('div.pay-item').forEach(item => {
+                const key = item.innerText;
+                if (uniquePays.has(key)) {
+                    item.remove();
+                } else {
+                    uniquePays.add(key);
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <h2 th:text="'주문 상세 정보 - ' + ${#temporals.format(payTime, 'yyyy-MM-dd HH:mm:ss')}"></h2>
     <div th:if="${payList != null && !payList.isEmpty()}">
-        <div th:each="pay : ${payList}">
+        <div th:each="pay : ${payList}" class="pay-item">
             <p><strong>이름:</strong> <span th:text="${pay.buyerName != null ? pay.buyerName : '정보 없음'}"></span></p>
             <p><strong>전화번호:</strong> <span th:text="${pay.buyerTel != null ? pay.buyerTel : '정보 없음'}"></span></p>
             <p><strong>주소:</strong> <span th:text="${pay.address != null ? pay.address : '정보 없음'}"></span>, <span th:text="${pay.postcode != null ? pay.postcode : '정보 없음'}"></span></p>
             <p><strong>결제수단:</strong> <span th:text="${pay.paymentMethod != null ? pay.paymentMethod : '정보 없음'}"></span></p>
+            <p><strong>총금액:</strong> <span th:text="${pay.amount != null ? pay.amount : '정보 없음'}"></span></p>
             <hr />
         </div>
     </div>

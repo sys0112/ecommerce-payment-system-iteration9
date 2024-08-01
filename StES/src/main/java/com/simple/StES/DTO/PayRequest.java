@@ -7,6 +7,7 @@ public class PayRequest {
 	private String paymentMethod;
     private String buyerName;
     private String buyerTel;
+    private int amount;
     private Address address;
     private Item[] items;
     
@@ -18,8 +19,11 @@ public class PayRequest {
 
     public String getBuyerTel() { return buyerTel; }
     public void setBuyerTel(String buyerTel) { this.buyerTel = buyerTel; }
-
-    public Address getAddress() { return address; }
+    
+    public int getAmount() { return amount; }
+	public void setAmount(int amount) { this.amount = amount; }
+	
+	public Address getAddress() { return address; }
     public void setAddress(Address address) { this.address = address; }
 
     public Item[] getItems() { return items; }

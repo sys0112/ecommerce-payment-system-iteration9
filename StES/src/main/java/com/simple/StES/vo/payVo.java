@@ -32,6 +32,7 @@ public class payVo {
 	private String paymentMethod;
 	@Column(name = "pay_time")
 	private LocalDateTime payTime;
+	private int amount;
 	
 	
 	public Integer getPayNum() {
@@ -106,14 +107,22 @@ public class payVo {
 	public void setPayTime(LocalDateTime payTime) {
 		this.payTime = payTime;
 	}
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
 	
 	@Override
 	public String toString() {
 		return "payVo [payNum=" + payNum + ", payname=" + payname + ", count=" + count + ", price=" + price
 				+ ", memberId=" + memberId + ", address=" + address + ", postcode=" + postcode + ", detailAddress="
 				+ detailAddress + ", buyerName=" + buyerName + ", buyerTel=" + buyerTel + ", paymentMethod="
-				+ paymentMethod + ", payTime=" + payTime + "]";
+				+ paymentMethod + ", payTime=" + payTime + ", amount=" + amount + "]";
 	}
+
+	
 	
 
 }

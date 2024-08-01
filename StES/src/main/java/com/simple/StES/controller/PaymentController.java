@@ -164,6 +164,7 @@ public class PaymentController {
         pay.setBuyerName(payRequest.getBuyerName());
         pay.setBuyerTel(payRequest.getBuyerTel());
         pay.setPaymentMethod(payRequest.getPaymentMethod());
+        pay.setAmount(payRequest.getAmount());
         pay.setPayTime(truncatedNow);
 
         pr.save(pay);

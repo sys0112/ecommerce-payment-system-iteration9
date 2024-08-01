@@ -21,4 +21,5 @@
     <fullyQualifiedTypeName name="com.simple.StES.repository.basketRepository"/>
     <fullyQualifiedTypeName name="com.simple.StES.vo.payVo"/>
     <fullyQualifiedTypeName name="jakarta.persistence.Column"/>
+    <fullyQualifiedTypeName name="java.util.Optional"/>
 </qualifiedTypeNameHistroy>

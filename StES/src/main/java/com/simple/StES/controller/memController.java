@@ -55,9 +55,9 @@ public class memController {
 	
 	@PostMapping("/login")
 //	톰캣서버에 필요한 객체가 있다면 매개변수로 작성하면 사용가능
-	public String login(@RequestParam(value = "id") String id ,@RequestParam(value = "pw") String pw, HttpSession session) { // 오버로딩 
+	public String login(@RequestParam(value = "email") String email ,@RequestParam(value = "pw") String pw, HttpSession session) { // 오버로딩 
 		
-			memVo memVo=mr.findByIdAndPw(id, pw);
+			memVo memVo=mr.findByEmailAndPw(email, pw);
 	
 			if(memVo!=null) {
 			session.setAttribute("memVo", memVo);
@@ -76,30 +76,36 @@ public class memController {
 		return model;
 	}
 	
-//	@PostMapping("/signup")
-//	public String singup(memVo memVo, HttpSession session) {
-//		boolean insert=false;
-//		try {
-//			Optional<memVo> memOption=mr.findById(memVo.getId()); // 기본으로 제공되는 함수
-//			if(memOption.isEmpty()) { // 있는지 검사해서 없을때만 저장
-//				memVo insertMem=mr.save(memVo);
-//				System.out.println(insertMem);
-//				if(insertMem!=null) {
-//					insert=true;
-//				}else {
-//					session.setAttribute("msg", "존재하는 아이디입니다.");
-//				}
-//			}
-//		}catch(Exception e){
-//			e.printStackTrace();
-//			session.setAttribute("msg", "Email 또는 Phone이 이미 존재합니다.");
-//		}
-//		if(insert) {
-//			return "redirect:/";			
-//		}else {
-//			return "redirect:/mem/signup";
-//		}
-//	}
+    @GetMapping("/success")
+    public ModelAndView successPage() {
+        ModelAndView mav = new ModelAndView("/mem/success"); // Return the view name for the success page
+        return mav;
+    }
+	
+	@PostMapping("/signup")
+	public String singup(memVo memVo, HttpSession session) {
+		boolean insert=false;
+		try {
+			Optional<memVo> memOption=mr.findByEmail(memVo.getEmail()); // 기본으로 제공되는 함수
+			if(memOption.isEmpty()) { // 있는지 검사해서 없을때만 저장
+				memVo insertMem=mr.save(memVo);
+				System.out.println(insertMem);
+				if(insertMem!=null) {
+					insert=true;
+				}else {
+					session.setAttribute("msg", "존재하는 이메일입니다.");
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			session.setAttribute("msg", "Email 또는 Phone이 이미 존재합니다.");
+		}
+		if(insert) {
+			return "redirect:/mem/success";			
+		}else {
+			return "redirect:/mem/signup";
+		}
+	}
 	
 	
 	@GetMapping(value="/find-username")
@@ -109,13 +115,13 @@ public class memController {
 	
 	@PostMapping("/find-username")
     public ResponseEntity<?> findUsernameByEmail(@RequestParam(value = "phone") String phone) {
-        memVo user = mr.findByPhone(phone);
+        Optional<memVo> user = mr.findByPhone(phone);
 
-        if (user == null) {
+        if (!user.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("등록된 번호가 없습니다.");
         }
 
-        return ResponseEntity.ok(user.getId());
+        return ResponseEntity.ok(user.get().getId());
     }
 //	
 	@GetMapping("/request-password-reset")
@@ -157,19 +163,15 @@ public class memController {
 	}
 	
 	
-//	@GetMapping("/ajax/findId/{id}")
-//	public @ResponseBody Optional<memVo> findId(@PathVariable("id") String id) {
-//		return mr.findById(id);
-//	}
-//	@GetMapping("/ajax/findEmail/{email}")
-//	public @ResponseBody Optional<memVo> findEmail(@PathVariable("email") String email){
-//		return mr.findByEmail(email);
-//	}
-//	@GetMapping("/ajax/findPhone/{phone}")
-//	public @ResponseBody Optional<memVo> findByPhone(@PathVariable("phone") String phone){
-//		return mr.findByPhone(phone);
-//	}
-	
+	@GetMapping("/ajax/findEmail/{email}")
+	public @ResponseBody Optional<memVo> findEmail(@PathVariable("email") String email){
+		return mr.findByEmail(email);
+	}
+	@GetMapping("/ajax/findPhone/{phone}")
+	public @ResponseBody Optional<memVo> findByPhone(@PathVariable("phone") String phone){
+		return mr.findByPhone(phone);
+	}
+
 }
 
 

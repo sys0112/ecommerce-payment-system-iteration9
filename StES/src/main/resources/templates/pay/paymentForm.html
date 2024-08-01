@@ -127,6 +127,7 @@
             console.log("buyerName:", buyerName);
             console.log("buyerTel:", buyerTel);
             console.log("payMethod:", payMethod);
+            console.log("totalSum:", totalSum);
             
             IMP.request_pay({
                 pg: 'html5_inicis', // 사용할 PG사
@@ -150,6 +151,7 @@
                             paymentMethod: payMethod,
                             buyerName: rsp.buyer_name,
                             buyerTel: rsp.buyer_tel,
+                            amount: totalSum,
                             items: items,
                             address: {
                                 postcode: postcode,
