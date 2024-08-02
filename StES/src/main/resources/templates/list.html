@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <style>
+        .product_list_container> .product .MAIN_IMG {
+            width: 225px;
+            height: 225px;
+        }
+        .product_list_container> .product {
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <div th:fragment="productList">
+        <main th:each="item : ${itemList}">
+            <section>
+                <ul class="product_list_container" id="productList">
+                    <li class="product">
+                        <a th:href="@{/item/view/{itemNum}(itemNum=${item.itemNum})}">
+                            <img class="MAIN_IMG" src="" alt="" th:src="@{/public/img/{img}(img=${item.mainImg})}">
+                        </a>
+                        <p th:text="${item.name}"></p>
+                        <p th:text="${item.price}"></p>
+                    </li>
+                </ul>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

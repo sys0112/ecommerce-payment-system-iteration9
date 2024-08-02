@@ -30,6 +30,7 @@ public class memVo {
 	private String address;
 	@Column(name = "address_detail")
 	private String addressDetail; 
+	private int grade;
 	
 	@Formula(value = "(SELECT COUNT(b.count) FROM item_basket b WHERE b.member_id=id)")//subquery
 	Integer basketCount;
@@ -89,14 +90,21 @@ public class memVo {
 	}
 	public void setAddressDetail(String addressDetail) {
 		this.addressDetail = addressDetail;
+	}	
+	public int getGrade() {
+		return grade;
+	}
+	public void setGrade(int grade) {
+		this.grade = grade;
 	}
 	
 	@Override
 	public String toString() {
 		return "memVo [Mnum=" + Mnum + ", id=" + id + ", pw=" + pw + ", phone=" + phone + ", email=" + email + ", name="
-				+ name + ", address=" + address + ", addressDetail=" + addressDetail + ", basketCount=" + basketCount
-				+ "]";
+				+ name + ", address=" + address + ", addressDetail=" + addressDetail + ", grade=" + grade
+				+ ", basketCount=" + basketCount + "]";
 	}
 
+	
 
 }

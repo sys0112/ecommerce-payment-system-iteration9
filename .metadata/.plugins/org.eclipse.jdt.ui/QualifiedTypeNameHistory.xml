@@ -12,8 +12,6 @@
     <fullyQualifiedTypeName name="java.util.Map"/>
     <fullyQualifiedTypeName name="java.lang.String"/>
     <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
-    <fullyQualifiedTypeName name="com.simple.StES.vo.memVo"/>
-    <fullyQualifiedTypeName name="com.simple.StES.Service.MemberService"/>
     <fullyQualifiedTypeName name="com.simple.StES.repository.memRepository"/>
     <fullyQualifiedTypeName name="jakarta.servlet.http.HttpSession"/>
     <fullyQualifiedTypeName name="com.simple.StES.controller.PaymentController.AddressRequest"/>
@@ -22,4 +20,6 @@
     <fullyQualifiedTypeName name="com.simple.StES.vo.payVo"/>
     <fullyQualifiedTypeName name="jakarta.persistence.Column"/>
     <fullyQualifiedTypeName name="java.util.Optional"/>
+    <fullyQualifiedTypeName name="com.simple.StES.vo.memVo"/>
+    <fullyQualifiedTypeName name="com.simple.StES.Service.MemberService"/>
 </qualifiedTypeNameHistroy>

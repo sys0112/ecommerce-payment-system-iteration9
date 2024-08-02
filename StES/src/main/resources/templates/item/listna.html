@@ -1,0 +1,46 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+
+<style>
+
+.product_list_container> .product .MAIN_IMG{
+    width: 225px;
+    height: 225px;
+}
+    
+.product_list_container> .product{
+   float: left;
+}
+
+</style>
+
+<body>
+     <header th:insert="header_nav.html"></header>
+     
+     
+     <main th:each="item:${boardNameTest}">
+           
+        <section>
+            
+        
+            <ul class="product_list_container" id="productList">
+                
+            <ul class="product">
+                <a th:href="@{/item/view/{itemNum}(itemNum=${item.itemNum})}">
+                     <img class="MAIN_IMG" src="" alt="" th:src="@{/public/img/{img}(img=${item.mainImg})}">
+                </a>
+                <p th:text="${item.name}"></p>
+                <p th:text="${item.price}"></p>
+               
+            </ul>
+                
+               
+               
+            </ul>
+        </section>
+    </main>
+</body>
+</html>

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import jakarta.servlet.http.HttpSession;
@@ -40,10 +41,11 @@ public class itemController {
 	
 	@GetMapping("/list.do")
 	public String list(Model model){
-//		Iterable<ItemVo> itemList=ir.findAll();
+//		Iterable<itemVo> itemList=ir.findAll();
 		model.addAttribute("itemList",ir.findAll());
-		return "/item/list";
+		return "list";
 	}
+	
 	
 	
 	@GetMapping("/orderform")
@@ -59,6 +61,21 @@ public class itemController {
 		model.addAttribute("boardTest", ir.findByItemNum(itemNum));
 		return "/item/detail";
 	}
+	
+	@GetMapping("/view/cates/{cateNum}")
+	public String catebb(Model model, @PathVariable("cateNum") int cateNum){
+		System.out.println(cateNum);
+		model.addAttribute("boardTests", ir.findByCateNum(cateNum));
+		return "/item/listca";
+	}
+	
+	@GetMapping("/view/names/{name}")
+	public String catebb(Model model, @PathVariable("name") String name){
+		System.out.println(name);
+		model.addAttribute("boardNameTest", ir.findByName(name));
+		return "/item/listna";
+	}
+	
 	
 	@GetMapping("/seller/insert.do")
 	public String insertForm() {

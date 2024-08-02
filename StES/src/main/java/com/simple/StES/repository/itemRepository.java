@@ -16,5 +16,7 @@ public interface itemRepository extends CrudRepository<itemVo, Integer>{
 	public Iterable<itemVo> findAll();
 	
 	public itemVo findByItemNum(Integer itemNum);
+	public List<itemVo> findByName(String name);
+	public List<itemVo> findByCateNum(int cateNum);
 	
 }

@@ -1,68 +1,148 @@
+<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head>
-	<meta charset="UTF-8">
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-	</head>
-	<body>
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<div class="container-fluid">
-			    <a href="/">Spring_shop</a>
-				    
-			<div class="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
-					<ul class="navbar-nav">
-						<li class="nav-item">
-							<a class=nav-link href="/mem/admin">
-								멤버리스트(관리)
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class=nav-link href="/cate/list.do">
-								카테고리스트(관리)
-							</a>
-						</li>
-						  <li class="nav-item dropdown">
-						    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">아이템(관리)</a>
-						    <ul class="dropdown-menu">
-						      
-						      <li><a class="dropdown-item" href="/item/list.do">아이템리스트</a></li>
-						      <li><hr class="dropdown-divider"></li>
-						      <li><a class="dropdown-item" href="/item/seller/insert.do">아이템 등록</a></li>
-						    </ul>
-						  </li>					  
-					</ul>
-					<div th:if="${session.memVo}">
-						<!--<span th:if="${session.memVo}!=null" th:text="${session.memVo.id}"></span>-->
-						<!--<span th:text="${session.memVo}?${session.memVo.id}:''"></span>  -->
-						<span th:text="${session.memVo?.name}"></span>
-						님
-						&nbsp;/&nbsp;
-						<a  class="btn btn-outline-primary position-relative"	href="/itemBasket/list.do">
-							장바구니
-							<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-								th:text=${session.memVo?.basketCount}>
-							</span>
-						</a>
-						&nbsp;/&nbsp;
-						<a 	href="/mem/logout">
-							로그아웃
-						</a>
-						&nbsp;/&nbsp;
-						<a 	href="/payments/myshop">
-							마이쿠팡
-						</a>
-					</div>
-	 				<div class="d-flex" th:if="!${session.memVo}">
-						<a 	href="/mem/login">
-							로그인
-						</a>&nbsp;/&nbsp; 
-						<a 	href="/mem/signup">
-							회원가입
-						</a>
-					</div>
-		    </div>
-		    </div>
-		</nav>
+<head>
+    <meta charset="UTF-8">
+    <title>홈페이지</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        .navbar-nav {
+            flex-direction: row;
+        }
+        .search-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            position: relative; /* Added to position the autoMaker relative to this container */
+        }
+        .searchTerm {
+            width: 300px;
+        }
+        .searchButton {
+            margin-left: 5px;
+        }
+        #autoMaker {
+            position: absolute;
+            top: 100%; /* Positioned below the input field */
+            left: 0;
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 100%; /* Match the width of the search container */
+            z-index: 1000;
+        }
+        #autoMaker div {
+            padding: 10px;
+            cursor: pointer;
+        }
+        #autoMaker div:hover {
+            background-color: #f0f0f0;
+        }
+        #autoMaker div.no-result {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Spring_shop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item" th:if="${session.memVo != null and session.memVo.grade == 1}">
+                        <a class="nav-link" href="/mem/admin">멤버리스트(관리)</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="/item/seller/insert.do" th:if="${session.memVo != null and session.memVo.grade == 1}">아이템 등록(관리)</a>
+                    </li>
+                </ul>
+                <div class="search-container">
+                    <div class="input-group">
+                        <input id="search_area" type="text" class="form-control searchTerm" placeholder="원하는 상품을 검색하세요." autocomplete="off">
+                        <button id="search_champ" type="button" class="btn btn-dark searchButton">Search</button>
+                        <div id='autoMaker'></div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div th:if="${session.memVo}">
+                        <span th:text="${session.memVo?.name}"></span>님
+                        &nbsp;/&nbsp;
+                        <a class="btn btn-outline-primary position-relative" href="/itemBasket/list.do">
+                            장바구니
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" th:text="${session.memVo?.basketCount}"></span>
+                        </a>
+                        &nbsp;/&nbsp;
+                        <a href="/mem/logout">로그아웃</a>
+                        &nbsp;/&nbsp;
+                        <a href="/payments/myshop">마이쿠팡</a>
+                    </div>
+                    <div class="ms-3 d-flex" th:if="!${session.memVo}">
+                        <a href="/mem/login">로그인</a>
+                        &nbsp;/&nbsp;
+                        <a href="/mem/signup">회원가입</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-	</body>
+    <script type="text/javascript">
+        var ref = [{"champname":"아식스"},{"champname":"리복"},{"champname":"나이키 신발"},{"champname":"아이다스 신발 123"}];
+
+        let championname = ref.map(item => item.champname);
+        var isComplete = false; // autoMaker 자식이 선택되었는지 여부
+
+        $('#search_area').keyup(function() {
+            var txt = $(this).val().toLowerCase();
+            $('#autoMaker').empty(); // 이전 검색 결과 초기화
+
+            if (txt !== '') {
+                var matchedItems = ref.filter(function(item) {
+                    return item.champname.toLowerCase().indexOf(txt) > -1;
+                });
+
+                if (matchedItems.length > 0) {
+                    matchedItems.forEach(function(arg) {
+                        $('#autoMaker').append(
+                            $('<div>').text(arg.champname)
+                        );
+                    });
+
+                    $('#autoMaker').children().each(function() {
+                        $(this).click(function() {
+                            $('#search_area').val($(this).text());
+                            $('#autoMaker').empty();
+                            $("#search_area").focus();
+                            isComplete = true;
+                        });
+                    });
+                } else {
+                    $('#autoMaker').append(
+                        $('<div class="no-result">검색어를 찾을 수 없습니다.</div>')
+                    );
+                }
+            }
+        });
+
+        $("#search_champ").click(function() {
+            let champname = $("#search_area").val();
+
+            if (champname === "" || championname.indexOf(champname) === -1) {
+                alert("상품 이름을 한글로 알맞게 적어주세요.");
+                $("#search_area").focus();
+            } else {
+            	 location.href = "/item/view/names/" + encodeURIComponent(champname); 
+            }
+        });
+
+        $("input[type=text]").on('keyup', function(e) {
+            if(e.key === 'Enter' || e.keyCode === 13){
+                $("#search_champ").trigger('click');
+            }
+        });
+    </script>
+</body>
 </html>

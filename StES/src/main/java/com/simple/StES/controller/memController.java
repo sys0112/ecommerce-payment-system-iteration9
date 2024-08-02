@@ -1,6 +1,7 @@
 package com.simple.StES.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -23,6 +24,7 @@ import com.simple.StES.vo.memVo;
 
 import jakarta.servlet.http.HttpSession;
 
+import com.simple.StES.Service.MemberService;
 import com.simple.StES.Service.PasswordResetService;
 import com.simple.StES.Service.SmsService;
 import com.simple.StES.repository.memRepository;
@@ -33,6 +35,7 @@ public class memController {
 	
 	@Autowired
 	memRepository mr;
+	
 	
 	@Autowired
     private PasswordResetService passwordResetService;
@@ -48,26 +51,26 @@ public class memController {
 		return "mem/list";
 	}
 	
-	@GetMapping(value="/login")
-	public String login() {
-		return "/mem/login";
-	}
+	@GetMapping("/login")
+    public String login() {
+        return "/mem/login"; // 로그인 페이지 반환
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam(value = "email") String email,
+                        @RequestParam(value = "pw") String pw,
+                        HttpSession session) {
+
+        memVo memVo = mr.findByEmailAndPw(email, pw);
+
+        if (memVo != null) {
+            session.setAttribute("memVo", memVo);
+            return "redirect:/"; // 로그인 후 홈 페이지로 리디렉션
+        } else {
+            return "redirect:/mem/login"; // 로그인 실패 시 로그인 페이지로 리디렉션
+        }
+    }
 	
-	@PostMapping("/login")
-//	톰캣서버에 필요한 객체가 있다면 매개변수로 작성하면 사용가능
-	public String login(@RequestParam(value = "email") String email ,@RequestParam(value = "pw") String pw, HttpSession session) { // 오버로딩 
-		
-			memVo memVo=mr.findByEmailAndPw(email, pw);
-	
-			if(memVo!=null) {
-			session.setAttribute("memVo", memVo);
-	
-			return "redirect:/"; // response.sendRedirect("/")			
-			}else {
-				return "redirect:/mem/login";
-			}
-		
-	}
 	
 	
 	@GetMapping("/signup")

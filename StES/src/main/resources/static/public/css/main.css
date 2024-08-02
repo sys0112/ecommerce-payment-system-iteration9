@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+*:before, *:after {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	font-family: sans-serif;
+	text-transform: uppercase;
+	font-size: 16px;
+	margin: 0;
+}
+
+#search_area{
+	padding: 5px;
+	width: 210px;
+}
+
+.wrap {
+	position: relative;
+	width: 280px;
+	height: 40px;
+	margin: 0 auto;
+	padding-top: 50px;
+}
+
+#autoMaker {
+	width: 210px;
+	height: auto;
+	background: white;
+	cursor: pointer;
+	color: black;
+}
+
+@keyframes blur {
+  from {
+    text-shadow:0px 0px 10px #fff,
+      0px 0px 10px #fff, 
+      0px 0px 25px #fff,
+      0px 0px 25px #fff,
+      0px 0px 25px #fff,
+      0px 0px 25px #fff,
+      0px 0px 25px #fff,
+      0px 0px 25px #fff,
+      0px 0px 50px #fff,
+      0px 0px 50px #fff,
+      0px 0px 50px #7B96B8,
+      0px 0px 150px #7B96B8,
+      0px 10px 100px #7B96B8,
+      0px 10px 100px #7B96B8,
+      0px 10px 100px #7B96B8,
+      0px 10px 100px #7B96B8,
+      0px -10px 100px #7B96B8,
+      0px -10px 100px #7B96B8;
+  }
+}
