@@ -136,7 +136,7 @@ public class memController {
 	@PostMapping("/request-password-reset")
     public String requestPasswordReset(@RequestParam(value = "email") String email) {
             passwordResetService.createPasswordResetToken(email); 
-            return "/mem/success"; // Return the view name for success
+            return "/mem/successes"; // Return the view name for success
         
     }
     

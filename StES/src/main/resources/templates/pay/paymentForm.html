@@ -4,137 +4,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>결제 폼</title>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
         body {
+            font-family: Arial, sans-serif;
             margin: 0;
+            padding: 20px;
+        }
 
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .section h2 {
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        table td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="button"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group input[type="button"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-group input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+
+        .radio-group label {
+            margin-right: 20px;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .button-group {
+            margin-top: 10px;
+        }
+
+        .button-group input[type="button"] {
+            margin-bottom: 10px; /* 버튼 간 간격 조정 */
         }
     </style>
-<script>
-	function daumPost(){
-	    new daum.Postcode({
-	        oncomplete: function(data) {
-	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-	            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
-	            
-	            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-	            var addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
-	            document.getElementById('postcode').value = data.zonecode
-	            document.getElementById('address').value = addr
-	            document.getElementById('detailAddress').focus()
-	        }
-	    }).open();
-	}
-	
-	function resetForm() {
-        document.getElementById('postcode').value = '';
-        document.getElementById('address').value = '';
-        document.getElementById('detailAddress').value = '';
-        // 필요한 경우 다른 폼 필드도 초기화 가능
-    }
-	
-	 function saveAddress() {
-	        var addressData = {
-	            postcode: document.getElementById('postcode').value,
-	            address: document.getElementById('address').value,
-	            detailAddress: document.getElementById('detailAddress').value
-	        };
-	        
-	        $.ajax({
-	            url: '/payments/saveAddress',
-	            type: 'POST',
-	            contentType: 'application/json',
-	            data: JSON.stringify(addressData),
-	            success: function(response) {
-	                alert('주소가 저장되었습니다.');
-	                console.log('주소 저장 성공:', response);
-	            },
-	            error: function(xhr, status, error) {
-	                console.error('주소 저장 실패:', error);
-	            }
-	        });
-	    }
-</script>
-</head>
-<body>
-<header th:insert="header_nav.html"></header>
-    <h1>결제하기</h1>
-    <h2>구매자 정보</h2>
-    <table>
-        <tr>
-            <td><strong>아이디:</strong></td>
-            <td th:text="${memVo.id}"></td>
-        </tr>
-        <tr>
-            <td><strong>이름:</strong></td>
-            <td id="buyerName" th:text="${memVo.name}"></td>
-        </tr>
-        <tr>
-            <td><strong>폰 번호:</strong></td>
-            <td id="buyerTel" th:text="${memVo.phone}"></td>
-        </tr>
-        <tr>
-            <td colspan="5" style="text-align: right;"><strong>총합계:</strong></td>
-            <td id="totalSum" th:text="${totalSum}"></td>
-        </tr>
-    </table>
-    
-    <h2>배송지 정보</h2>
-    <input type="text" id="postcode" placeholder="우편번호" readonly="readonly">
-    <input type="button" onclick="daumPost()" value="우편번호 찾기"><br>
-    <input type="text" id="address" placeholder="주소"><br>
-    <input type="text" id="detailAddress" placeholder="상세주소"><br>
-    <input type="button" value="돌아가기" onclick="resetForm()"><br>
-    <input type="button" value="주소 저장" onclick="saveAddress()"><br>
-    
-    <button id="cardPayButton">신용카드 결제</button>
-    <button id="phonePayButton">휴대폰 소액결제</button>
+    <script>
+        function daumPost() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
+                    document.getElementById('postcode').value = data.zonecode;
+                    document.getElementById('address').value = addr;
+                    document.getElementById('detailAddress').focus();
+                }
+            }).open();
+        }
 
-    <script th:inline="javascript">
-    /*<![CDATA[*/
-        var IMP = window.IMP;
-        IMP.init('imp78251645'); // 가맹점 식별코드
+        function resetForm() {
+            document.getElementById('postcode').value = '';
+            document.getElementById('address').value = '';
+            document.getElementById('detailAddress').value = '';
+        }
 
-        
-        var basketListJson = /*[[${basketListJson}]]*/ '[]';
-        
-        var basketList = JSON.parse(basketListJson);
-        
-        console.log(basketList);
-        
-        var totalSum = parseFloat(document.getElementById('totalSum').innerText.trim().replace(/,/g, ''));
-        
-        function requestPay(payMethod) {
-        	
-        	var items = basketList.map(function(basket) {
+        function saveAddress() {
+            var addressData = {
+                postcode: document.getElementById('postcode').value,
+                address: document.getElementById('address').value,
+                detailAddress: document.getElementById('detailAddress').value
+            };
+
+            $.ajax({
+                url: '/payments/saveAddress',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(addressData),
+                success: function(response) {
+                    alert('주소가 저장되었습니다.');
+                    console.log('주소 저장 성공:', response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('주소 저장 실패:', error);
+                }
+            });
+        }
+
+        function requestPay() {
+            var payMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+            var items = basketList.map(function(basket) {
                 return {
-                	name: basket.name,
+                    name: basket.name,
                     count: basket.count,
                     price: basket.price
                 };
             });
-        	
-        	console.log("Mapped items:", items);
-        	
-        	
-        	var goodsname = items.map(item => item.name + ' x ' + item.count).join(', ');
-            console.log("item count (for debugging):", goodsname);
-            
-         // 구매자 정보 가져오기
+
+            var goodsname = items.map(item => item.name + ' x ' + item.count).join(', ');
+
             var buyerName = document.getElementById('buyerName').innerText.trim();
             var buyerTel = document.getElementById('buyerTel').innerText.trim();
             var postcode = document.getElementById('postcode').value;
             var address = document.getElementById('address').value;
             var detailAddress = document.getElementById('detailAddress').value;
-            
-            console.log("buyerName:", buyerName);
-            console.log("buyerTel:", buyerTel);
-            console.log("payMethod:", payMethod);
-            console.log("totalSum:", totalSum);
-            
+            var totalSum = parseFloat(document.getElementById('totalSum').innerText.trim().replace(/,/g, ''));
+
             IMP.request_pay({
                 pg: 'html5_inicis', // 사용할 PG사
                 pay_method: payMethod, // 결제 수단
@@ -146,26 +162,24 @@
                 buyer_addr: address, // 구매자 주소
                 buyer_postcode: postcode, // 구매자 우편번호
                 goodsname: goodsname
-              
-                
-            }, function (rsp) {
+            }, function(rsp) {
                 if (rsp.success) {
                     var msg = '결제가 완료되었습니다.';
                     alert(msg);
-              
+
                     var paymentInfo = {
-                            paymentMethod: payMethod,
-                            buyerName: rsp.buyer_name,
-                            buyerTel: rsp.buyer_tel,
-                            amount: totalSum,
-                            items: items,
-                            address: {
-                                postcode: postcode,
-                                address: address,
-                                detailAddress: detailAddress
-                            }
-                        };
-                    
+                        paymentMethod: payMethod,
+                        buyerName: rsp.buyer_name,
+                        buyerTel: rsp.buyer_tel,
+                        amount: totalSum,
+                        items: items,
+                        address: {
+                            postcode: postcode,
+                            address: address,
+                            detailAddress: detailAddress
+                        }
+                    };
+
                     $.ajax({
                         url: '/payments/save',
                         type: 'POST',
@@ -173,28 +187,90 @@
                         data: JSON.stringify(paymentInfo),
                         success: function(response) {
                             console.log('결제 정보 저장 성공:', response);
-                            
                             window.location.href = '/payments/payment_success';
                         },
                         error: function(xhr, status, error) {
                             console.error('결제 정보 저장 실패:', error);
                         }
                     });
-                    
-                
+
                 } else {
                     alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);
                 }
             });
         }
+    </script>
+</head>
+<body>
+    <header th:insert="header_nav.html"></header>
+    <div class="container">
+        <h1>결제하기</h1>
 
-        document.getElementById('cardPayButton').addEventListener('click', function() {
-            requestPay('card');
-        });
+        <div class="section">
+            <h2>구매자 정보</h2>
+            <table>
+                <tr>
+                    <td><strong>아이디:</strong></td>
+                    <td th:text="${memVo.id}"></td>
+                </tr>
+                <tr>
+                    <td><strong>이름:</strong></td>
+                    <td id="buyerName" th:text="${memVo.name}"></td>
+                </tr>
+                <tr>
+                    <td><strong>폰 번호:</strong></td>
+                    <td id="buyerTel" th:text="${memVo.phone}"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: right;"><strong>총합계:</strong></td>
+                    <td id="totalSum" th:text="${totalSum}"></td>
+                </tr>
+            </table>
+        </div>
 
-        document.getElementById('phonePayButton').addEventListener('click', function() {
-            requestPay('phone');
-        });
+        <div class="section">
+            <h2>배송지 정보</h2>
+            <div class="form-group">
+                <input type="text" id="postcode" placeholder="우편번호" readonly="readonly">
+                <input type="button" onclick="daumPost()" value="우편번호 찾기">
+            </div>
+            <div class="form-group">
+                <input type="text" id="address" placeholder="주소">
+            </div>
+            <div class="form-group">
+                <input type="text" id="detailAddress" placeholder="상세주소">
+            </div>
+            <div class="button-group">
+                <input type="button" value="돌아가기" onclick="resetForm()">
+                <input type="button" value="주소 저장" onclick="saveAddress()">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>결제 방법</h2>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="paymentMethod" value="card" checked> 신용카드
+                </label>
+                <label>
+                    <input type="radio" name="paymentMethod" value="phone"> 휴대폰 소액결제
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="button" value="결제" onclick="requestPay()">
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+        var IMP = window.IMP;
+        IMP.init('imp78251645'); // 가맹점 식별코드
+
+        var basketListJson = /*[[${basketListJson}]]*/ '[]';
+        var basketList = JSON.parse(basketListJson);
+
+        console.log(basketList);
         /*]]>*/
     </script>
 </body>
