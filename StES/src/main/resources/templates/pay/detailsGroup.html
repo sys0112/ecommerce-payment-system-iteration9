@@ -19,6 +19,7 @@
     </script>
 </head>
 <body>
+    <header th:insert="header_nav.html"></header>
     <h2 th:text="'주문 상세 정보 - ' + ${#temporals.format(payTime, 'yyyy-MM-dd HH:mm:ss')}"></h2>
     <div th:if="${payList != null && !payList.isEmpty()}">
         <div th:each="pay : ${payList}" class="pay-item">

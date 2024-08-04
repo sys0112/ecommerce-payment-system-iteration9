@@ -7,12 +7,16 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.simple.StES.repository.PasswordResetTokenRepository;
 import com.simple.StES.repository.memRepository;
 import com.simple.StES.vo.PasswordResetToken;
 import com.simple.StES.vo.memVo;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class PasswordResetService {
@@ -45,12 +49,18 @@ public class PasswordResetService {
     private void sendResetEmail(String email, String token) {
         String resetUrl = "http://localhost:8080/mem/reset-password?token=" + token;
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("Password Reset Request");
-        message.setText(resetUrl);
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
-        mailSender.send(message);
+        try {
+            helper.setTo(email);
+            helper.setSubject("Password Reset Request");
+            helper.setText("<p>Click the link below to reset your password:</p>"
+                    + "<a href=\"" + resetUrl + "\">Reset Password</a>", true);
+            mailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Failed to send email", e);
+        }
     }
 
     public void resetPassword(String token, String newPassword) {

@@ -20,6 +20,7 @@
     </style>
 </head>
 <body>
+    <header th:insert="header_nav.html"></header>
     <div th:each="group : ${groupedPayList}">
         <h3 th:text="${#temporals.format(group.payTime, 'yyyy-MM-dd HH:mm:ss')}"></h3>
         <table class="table">

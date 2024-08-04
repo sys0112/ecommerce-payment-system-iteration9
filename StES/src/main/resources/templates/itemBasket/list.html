@@ -6,9 +6,10 @@
 		<header th:insert="header_nav.html"></header>
 		<h1>장바구니 리스트</h1>
 		<!--<div th:text=${basketList}></div>-->
-		<table class="table" th:each="basket:${basketList}">
+		<table class="table">
 			<thead>
 				<tr>
+				    <th>img</th>
 					<th>item_num</th>
 					<th>name</th>
 					<th>title</th>
@@ -19,7 +20,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr th:each="basket:${basketList}">
+				    <td>
+				    <img class="MAIN_IMG" src="" alt="" th:src="@{/public/img/thubm/{img}(img=${basket.item.mainImg})}">
+				    </td>
 					<td th:text="${basket.itemNum}"></td>
 					<td th:text="${basket.item.name}"></td>
 					<td th:text="${basket.item.title}"></td>					
@@ -61,7 +65,7 @@
 		</tbody>
 		<tfoot>
             <tr>
-                <td colspan="5" style="text-align: right;"><strong>총합계:</strong></td>
+                <td colspan="8" style="text-align: right;"><strong>총합계:</strong></td>
                 <td th:text="${totalSum}"></td>
             </tr>
         </tfoot>

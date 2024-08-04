@@ -1,50 +1,133 @@
-<html lang="en" xmlns:th="http:/www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8">
-		<!--정적파일 위치인 static도 root경로로 인지-->
-		<script src="/public/js/mem/signup.js" defer="defer">
-		
-		</script>
-	</head>
-	<body>
-		<header th:insert="header_nav.html"></header>
-		<h1>회원가입 페이지</h1>
-		<form action="/mem/signup" method="post" name="signup">
-		<p>
-			<label>
-				이메일: <input type="text" name="email" value="" placeholder="hong@gmail.com">
-			</label>
-			<span id="checkEmail">중복체크중입니다.</span>
-		</p>
-		<p>
-			<label>
-				폰: <input type="text" name="phone" value="" placeholder="010-1234-1234">
-			</label>
-			<span id="checkPhone">중복체크중입니다.</span>
-		</p>
-		<p>
-			<label>
-				pw: <input type="text" name="pw" value="1234">
-			</label>
-			<span id="checkPw">길이가 4이상</span>
-		</p>
-			<p>
-			<label>
-				pw: <input type="text" name="pw_check" value="">
-			</label>
-			<span id="checkPwCheck">중복체크중입니다.</span>
-		</p>
-		
-		<p>
-			<label>
-				이름: <input type="text" name="name" value="길동">
-			</label>
-		</p>
-		
-		<p>
-			<button type="reset">리셋</button>
-			<button type="submit">제출</button>
-		</p>
-		</form>
-	</body>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입 페이지</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            padding: 0;
+            text-align: center;
+            z-index: 1000;
+        }
+        .main-container {
+            flex: 1;
+            display: flex;
+            justify-content: center; /* 수평 가운데 정렬 */
+            align-items: center; /* 수직 가운데 정렬 */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px; /* 폼의 최대 너비 설정 */
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+            text-align: left; /* 폼의 텍스트 왼쪽 정렬 */
+        }
+        h1 {
+            margin-top: 0;
+            text-align: center; /* 제목 가운데 정렬 */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form p {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px; /* 레이블과 입력 필드 사이 여백 설정 */
+            text-align: left; /* 레이블 텍스트 왼쪽 정렬 */
+        }
+        input[type="text"] {
+            width: calc(100% - 22px); /* 입력 필드 너비 조정 */
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        span {
+            margin-top: 5px;
+            color: #555;
+            font-size: 0.875em;
+            display: block; /* 블록 요소로 설정하여 줄 바꿈 */
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button[type="reset"] {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: white;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script src="/public/js/mem/signup.js" defer="defer"></script>
+</head>
+<body>
+    <header th:insert="header_nav.html"></header>
+    <div class="main-container">
+        <div class="container">
+            <h1>회원가입 페이지</h1>
+            <form action="/mem/signup" method="post" name="signup">
+                <p>
+                    <label for="email">이메일:</label>
+                    <input type="text" id="email" name="email" value="" placeholder="hong@gmail.com">
+                    <span id="checkEmail">중복체크중입니다.</span>
+                </p>
+                <p>
+                    <label for="phone">폰:</label>
+                    <input type="text" id="phone" name="phone" value="" placeholder="010-1234-1234">
+                    <span id="checkPhone">중복체크중입니다.</span>
+                </p>
+                <p>
+                    <label for="pw">비밀번호:</label>
+                    <input type="text" id="pw" name="pw" value="1234">
+                    <span id="checkPw">길이가 4이상</span>
+                </p>
+                <p>
+                    <label for="pw_check">비밀번호 확인:</label>
+                    <input type="text" id="pw_check" name="pw_check" value="">
+                    <span id="checkPwCheck">중복체크중입니다.</span>
+                </p>
+                <p>
+                    <label for="name">이름:</label>
+                    <input type="text" id="name" name="name" value="길동">
+                </p>
+                <p>
+                    <button type="reset">리셋</button>
+                    <button type="submit">제출</button>
+                </p>
+            </form>
+        </div>
+    </div>
+</body>
 </html>
