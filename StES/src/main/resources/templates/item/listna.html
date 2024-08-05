@@ -1,46 +1,59 @@
+<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-
+<title>상품 목록</title>
 <style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
 
-.product_list_container> .product .MAIN_IMG{
-    width: 225px;
-    height: 225px;
-}
-    
-.product_list_container> .product{
-   float: left;
-}
+    .product_list_container> .product .MAIN_IMG{
+        width: 225px;
+        height: 225px;
+    }
 
+    .product_list_container> .product{
+        float: left;
+    }
+
+    main {
+        flex: 1; /* main 영역을 남은 공간을 차지하게 함 */
+    }
+
+    footer {
+        background: #333;
+        color: #fff;
+        text-align: center;
+        padding: 1rem 0;
+    }
+
+    footer p {
+        margin: 0;
+        font-size: 0.9rem;
+    }
 </style>
-
+</head>
 <body>
-     <header th:insert="header_nav.html"></header>
-     
-     
-     <main th:each="item:${boardNameTest}">
-           
+    <header th:insert="header_nav.html"></header>
+    <main th:each="item:${boardNameTest}">
         <section>
-            
-        
             <ul class="product_list_container" id="productList">
-                
-            <ul class="product">
-                <a th:href="@{/item/view/{itemNum}(itemNum=${item.itemNum})}">
-                     <img class="MAIN_IMG" src="" alt="" th:src="@{/public/img/{img}(img=${item.mainImg})}">
-                </a>
-                <p th:text="${item.name}"></p>
-                <p th:text="${item.price}"></p>
-               
-            </ul>
-                
-               
-               
+                <ul class="product">
+                    <a th:href="@{/item/view/{itemNum}(itemNum=${item.itemNum})}">
+                        <img class="MAIN_IMG" src="" alt="" th:src="@{/public/img/{img}(img=${item.mainImg})}">
+                    </a>
+                    <p th:text="${item.name}"></p>
+                    <p th:text="${item.price}"></p>
+                </ul>
             </ul>
         </section>
     </main>
+    <footer>
+        <p>welcome to myshop!</p>
+    </footer>
 </body>
 </html>

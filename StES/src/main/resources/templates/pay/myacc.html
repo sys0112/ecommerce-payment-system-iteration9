@@ -26,15 +26,13 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>pay_num</th>
-                    <th>payname</th>
-                    <th>count</th>
-                    <th>price</th>
+                    <th>상품이름</th>
+                    <th>개수</th>
+                    <th>가격</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="pay : ${group.pays}">
-                    <td th:text="${pay.payNum}"></td>
                     <td th:text="${pay.payname}"></td>
                     <td th:text="${pay.count}"></td>
                     <td th:text="${pay.price}"></td>

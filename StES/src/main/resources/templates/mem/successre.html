@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Reset Successful</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .success-message {
+            text-align: center;
+            border: 1px solid #28a745;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .success-message h1 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header th:insert="header_nav.html"></header>
+    <div class="success-message">
+        <h1>비밀번호 변경 성공!</h1>
+        <p>비밀번호가 성공적으로 변경되었습니다. 이제 로그인하실 수 있습니다.</p>
+        <a href="/mem/login" class="btn btn-primary">로그인 페이지로 이동</a>
+    </div>
+</body>
+</html>

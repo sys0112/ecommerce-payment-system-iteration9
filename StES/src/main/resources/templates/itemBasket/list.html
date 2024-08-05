@@ -1,78 +1,80 @@
+<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta carset="UTF-8">
-	</head>
-	<body>
-		<header th:insert="header_nav.html"></header>
-		<h1>장바구니 리스트</h1>
-		<!--<div th:text=${basketList}></div>-->
-		<table class="table">
-			<thead>
-				<tr>
-				    <th>img</th>
-					<th>item_num</th>
-					<th>name</th>
-					<th>title</th>
-					<th>count</th>
-					<th>price</th>
-					<th>basket.count</th>
-					<th>total price</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="basket:${basketList}">
-				    <td>
-				    <img class="MAIN_IMG" src="" alt="" th:src="@{/public/img/thubm/{img}(img=${basket.item.mainImg})}">
-				    </td>
-					<td th:text="${basket.itemNum}"></td>
-					<td th:text="${basket.item.name}"></td>
-					<td th:text="${basket.item.title}"></td>					
-					<td th:text="${basket.count}"></td>
-					<td th:text="${basket.item.price}"></td>
-					<td>
-						<form action="/itemBasket/update.do" method="post">
-							<input type="hidden" name="basketNum" th:value="${basket.basketNum}">
-							<input type="hidden" name="memberId" th:value="${basket.memberId}">
-							<input type="hidden" name="itemNum" th:value="${basket.itemNum}">
+<head>
+    <meta charset="UTF-8">
+    <title>장바구니 리스트</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card-img {
+            max-width: 100px; /* 이미지 크기 조정 */
+            height: auto;
+        }
+        .card-body {
+            padding: 1rem;
+        }
+        .card-footer {
+            background-color: #f8f9fa;
+        }
+        .total-sum {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .btn-container {
+            display: flex;
+            gap: 0.5rem; /* 버튼 간격 조정 */
+        }
+    </style>
+</head>
+<body>
+    <header th:insert="header_nav.html"></header>
+    <div class="container-lg my-4">
+        <h1 class="mb-4">장바구니 리스트</h1>
 
-
-							<div class="input-group">
-							  <select class="form-select" name="count">
-							  	<th:block th:each="count:${#numbers.sequence(basket.count+10,1)}">
-							    	<option  th:selected="(${count}==${basket.count})" th:value="${count}" th:text="${count}"></option>
-							  	</th:block>
-							    	
-							  </select>
-							  <button class="btn btn-outline-info">수정</button>
-
-							</div>
-						</form>
-					</td>
-					<td>
- 						<form action="/itemBasket/delete.do" method="post">
-
-							<div class="input-group mb-3">
-							  <div class="input-group-text">
-							    <input class="form-check-input mt-0" type="checkbox" name="basketNum" th:value="${basket.basketNum}">
-							  </div>
-							  <button class="form-control btn btn-outline-danger">삭제</button>
-							</div>
-						</form>
-
-					</td>
-					<td th:text="${basket.count * basket.item.price}"></td>
-				</tr>		
-		</tbody>
-		<tfoot>
-            <tr>
-                <td colspan="8" style="text-align: right;"><strong>총합계:</strong></td>
-                <td th:text="${totalSum}"></td>
-            </tr>
-        </tfoot>
-		</table>
-		
-		<div class="text-right">
-        <a href="/payments/form" class="btn btn-primary">주문하기</a>
+        <div id="basketList" class="row">
+            <div class="col-12" th:each="basket : ${basketList}">
+                <div class="card mb-3">
+                    <div class="card-body d-flex align-items-center">
+                        <input type="checkbox" class="form-check-input me-3" name="basketNum" value="${basket.basketNum}" data-price="${basket.count * basket.item.price}" onchange="updateTotal()">
+                        <img class="card-img" th:src="@{/public/img/thubm/{img}(img=${basket.item.mainImg})}" alt="상품 이미지">
+                        <div class="ms-3">
+                            <h5 class="card-title" th:text="${basket.item.name}"></h5>
+                            <p class="card-text" th:text="${basket.item.title}"></p>
+                            <p class="card-text">수량: <span th:text="${basket.count}"></span></p>
+                            <p class="card-text">가격: <span th:text="${basket.item.price}"></span> 원</p>
+                            <p class="card-text">총 가격: <span th:text="${basket.count * basket.item.price}"></span> 원</p>
+                            <div class="btn-container">
+                                <form action="/itemBasket/update.do" method="post">
+                                    <input type="hidden" name="basketNum" th:value="${basket.basketNum}">
+                                    <input type="hidden" name="memberId" th:value="${basket.memberId}">
+                                    <input type="hidden" name="itemNum" th:value="${basket.itemNum}">
+                                    <select class="form-select" name="count">
+                                        <th:block th:each="count : ${#numbers.sequence(basket.count + 10, 1)}">
+                                            <option th:value="${count}" th:text="${count}" th:selected="${count == basket.count}"></option>
+                                        </th:block>
+                                    </select>
+                                    <button type="submit" class="btn btn-outline-info">수정</button>
+                                </form>
+                                <form action="/itemBasket/delete.do" method="post">
+                                    <input type="hidden" name="basketNum" th:value="${basket.basketNum}">
+                                    <button type="submit" class="btn btn-outline-danger">삭제</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-	</body>
+
+        <div class="card-footer text-end">
+            <strong class="total-sum">총합계: <span id="totalSum" class="total-sum" th:text="${totalSum}"></span> 원</strong>
+        </div>
+
+        <div class="text-right mt-4">
+            <a href="/payments/form" class="btn btn-primary">주문하기</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
 </html>

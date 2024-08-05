@@ -4,6 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상세 정보</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background: #4CAF50;
+            color: #fff;
+            padding: 0;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: #333;
+        }
+        .section {
+            position: relative; /* 추가 */
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .section h3 {
+            position: absolute; /* 추가 */
+            top: -0.8rem; /* 추가: 텍스트를 상단으로 이동 */
+            left: 1rem; /* 추가: 텍스트를 왼쪽으로 이동 */
+            margin: 0;
+            padding: 0 0.5rem; /* 배경색과 겹치는 부분 여백 */
+            background: #f4f4f4; /* 배경색을 본문과 일치시킴 */
+            font-size: 1.2rem;
+            color: #333;
+        }
+        .pay-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .pay-item:last-child {
+            border-bottom: none;
+        }
+        .pay-item p {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+        }
+        .pay-item p strong {
+            font-weight: bold;
+        }
+        .no-data {
+            text-align: center;
+            color: #777;
+            font-size: 1.2rem;
+            padding: 2rem 0;
+        }
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: auto;
+        }
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+    </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const uniquePays = new Set();
@@ -19,20 +105,34 @@
     </script>
 </head>
 <body>
-    <header th:insert="header_nav.html"></header>
-    <h2 th:text="'주문 상세 정보 - ' + ${#temporals.format(payTime, 'yyyy-MM-dd HH:mm:ss')}"></h2>
-    <div th:if="${payList != null && !payList.isEmpty()}">
-        <div th:each="pay : ${payList}" class="pay-item">
-            <p><strong>이름:</strong> <span th:text="${pay.buyerName != null ? pay.buyerName : '정보 없음'}"></span></p>
-            <p><strong>전화번호:</strong> <span th:text="${pay.buyerTel != null ? pay.buyerTel : '정보 없음'}"></span></p>
-            <p><strong>주소:</strong> <span th:text="${pay.address != null ? pay.address : '정보 없음'}"></span>, <span th:text="${pay.postcode != null ? pay.postcode : '정보 없음'}"></span></p>
-            <p><strong>결제수단:</strong> <span th:text="${pay.paymentMethod != null ? pay.paymentMethod : '정보 없음'}"></span></p>
-            <p><strong>총금액:</strong> <span th:text="${pay.amount != null ? pay.amount : '정보 없음'}"></span></p>
-            <hr />
+    <header th:insert="header_nav.html">
+        <h1>주문 정보</h1>
+    </header>
+    <div class="container">
+        <h2 th:text="'주문 상세 정보 - ' + ${#temporals.format(payTime, 'yyyy-MM-dd')}"></h2>
+        <div th:if="${payList != null && !payList.isEmpty()}">
+            <div class="section">
+                <h3>회원정보</h3>
+                <div th:each="pay : ${payList}" class="pay-item">
+                    <p><strong>이름:</strong> <span th:text="${pay.buyerName != null ? pay.buyerName : '정보 없음'}"></span></p>
+                    <p><strong>전화번호:</strong> <span th:text="${pay.buyerTel != null ? pay.buyerTel : '정보 없음'}"></span></p>
+                    <p><strong>주소:</strong> <span th:text="${pay.address != null ? pay.address : '정보 없음'}"></span>, <span th:text="${pay.postcode != null ? pay.postcode : '정보 없음'}"></span></p>
+                </div>
+            </div>
+            <div class="section">
+                <h3>결제</h3>
+                <div th:each="pay : ${payList}" class="pay-item">
+                    <p><strong>결제수단:</strong> <span th:text="${pay.paymentMethod != null ? pay.paymentMethod : '정보 없음'}"></span></p>
+                    <p><strong>총금액:</strong> ₩<span th:text="${pay.amount != null ? pay.amount : '정보 없음'}"></span></p>
+                </div>
+            </div>
+        </div>
+        <div th:if="${payList == null || payList.isEmpty()}" class="no-data">
+            <p>해당 주문의 상세 정보를 찾을 수 없습니다.</p>
         </div>
     </div>
-    <div th:if="${payList == null || payList.isEmpty()}">
-        <p>해당 주문의 상세 정보를 찾을 수 없습니다.</p>
-    </div>
+    <footer>
+        <p>welcome to myshop!</p>
+    </footer>
 </body>
 </html>

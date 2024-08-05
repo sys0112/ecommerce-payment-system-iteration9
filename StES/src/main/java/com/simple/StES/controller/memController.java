@@ -154,7 +154,7 @@ public class memController {
                                 @RequestParam(value = "newPassword") String newPassword) {
         passwordResetService.resetPassword(token, newPassword);
         // 비밀번호가 성공적으로 변경되었음을 알리는 페이지로 리다이렉트
-        return "redirect:/";
+        return "/mem/successre";
     }
 	
 	
