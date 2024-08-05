@@ -67,6 +67,17 @@
             height: 30px; /* Adjust as needed */
             width: auto;
         }
+        .nav-divider {
+            margin: 0 8px; /* Adjust the margin as needed */
+            color: #6c757d; /* Set a color that is visible and fits your theme */
+        }
+        .user-name {
+            color: #000; /* Set a color that is visible */
+            font-weight: bold; /* Optionally make the text bold */
+        }
+        .suffix {
+            color: #000; /* Set a color that is visible */
+        }
     </style>
 </head>
 <body>
@@ -105,24 +116,23 @@
                 </div>
                 <div class="d-flex align-items-center">
                     <div th:if="${session.memVo}">
-                        <span th:text="${session.memVo?.name}"></span>님
-                        &nbsp;/&nbsp;
+                        <span class="user-name" th:text="${session.memVo?.name}"></span><span class="suffix">님</span>
+                        <span class="nav-divider"></span>
                         <a class="btn btn-outline-primary position-relative" href="/itemBasket/list.do">
                             장바구니
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" th:text="${session.memVo?.basketCount}"></span>
                         </a>
-                        &nbsp;/&nbsp;
+                        <span class="nav-divider"></span>
                         <a href="/mem/logout">
                             로그아웃
                         </a>
-                        &nbsp;/&nbsp;
+                        <span class="nav-divider"></span>
                         <a href="/payments/myshop">결제정보</a>
                     </div>
                     <div class="ms-3 d-flex" th:if="!${session.memVo}">
                         <a href="/mem/login">
                             로그인
                         </a>
-                        &nbsp;/&nbsp;
+                        <span class="nav-divider"></span>
                         <a href="/mem/signup">회원가입</a>
                     </div>
                 </div>
@@ -131,7 +141,7 @@
     </nav>
 
     <script type="text/javascript">
-        var ref = [{"champname":"아식스"},{"champname":"리복"},{"champname":"나이키 신발"},{"champname":"아이다스 신발 123"},{"champname":"테스트"}];
+        var ref = [{"champname":"아식스"},{"champname":"리복"},{"champname":"나이키 신발"},{"champname":"아이다스 신발 123"},{"champname":"테스트"},{"champname":"제품1"},{"champname":"제품2"}];
 
         let championname = ref.map(item => item.champname);
         var isComplete = false; // autoMaker 자식이 선택되었는지 여부

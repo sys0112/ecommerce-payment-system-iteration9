@@ -51,25 +51,34 @@ public class memController {
 		return "mem/list";
 	}
 	
+	@GetMapping("/admin2")
+	public String lists() {
+		return "/mem/successre";
+	}
+	
 	@GetMapping("/login")
-    public String login() {
-        return "/mem/login"; // 로그인 페이지 반환
-    }
+	public String login(Model model) {
+	    model.addAttribute("errorMessage", ""); // 기본적으로 오류 메시지를 빈 문자열로 설정
+	    return "/mem/login";
+	}
 
-    @PostMapping("/login")
-    public String login(@RequestParam(value = "email") String email,
-                        @RequestParam(value = "pw") String pw,
-                        HttpSession session) {
+	@PostMapping("/login")
+	public String login(@RequestParam(value = "email") String email,
+	                    @RequestParam(value = "pw") String pw,
+	                    HttpSession session,
+	                    Model model) {
 
-        memVo memVo = mr.findByEmailAndPw(email, pw);
+	    memVo memVo = mr.findByEmailAndPw(email, pw);
 
-        if (memVo != null) {
-            session.setAttribute("memVo", memVo);
-            return "redirect:/"; // 로그인 후 홈 페이지로 리디렉션
-        } else {
-            return "redirect:/mem/login"; // 로그인 실패 시 로그인 페이지로 리디렉션
-        }
-    }
+	    if (memVo != null) {
+	        session.setAttribute("memVo", memVo);
+	        return "redirect:/"; // 로그인 후 홈 페이지로 리디렉션
+	    } else {
+	        model.addAttribute("errorMessage", "아이디 또는 비밀번호가 올바르지 않습니다."); // 오류 메시지 추가
+	        return "/mem/login"; // 로그인 실패 시 로그인 페이지로 리디렉션
+	    }
+	}
+
 	
 	
 	

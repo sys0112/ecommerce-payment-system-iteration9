@@ -15,6 +15,11 @@
             gap: 15px;
             margin-top: 0;
         }
+        .alert-error {
+            color: red;
+            font-size: 0.9em;
+            display: none; /* 기본적으로 숨김 */
+        }
     </style>
 </head>
 <body>
@@ -34,6 +39,8 @@
                     <input type="password" name="pw" class="form-control" id="inputPassword" value="roqkf12">
                 </div>
             </div>
+            <!-- 에러 메시지 div -->
+            <div id="error-message" class="alert alert-danger alert-error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
             <div class="buttons-container">
                 <button type="submit" class="btn btn-success">로그인</button>
             </div>
@@ -42,6 +49,16 @@
                 <a href="/mem/request-password-reset" class="btn btn-link">비밀번호 찾기</a>
             </div>
         </form>
-    </div> 
+    </div>
+
+    <script>
+        // 페이지가 로드될 때 에러 메시지 div가 보이도록 하는 함수
+        document.addEventListener('DOMContentLoaded', function() {
+            var errorMessage = document.getElementById('error-message');
+            if (errorMessage && errorMessage.innerText.trim() !== '') {
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
