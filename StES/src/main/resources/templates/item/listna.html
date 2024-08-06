@@ -47,7 +47,7 @@
                         <img class="MAIN_IMG" src="" alt="" th:src="@{/public/img/{img}(img=${item.mainImg})}">
                     </a>
                     <p th:text="${item.name}"></p>
-                    <p th:text="${item.price}"></p>
+                    <p th:text="${item.price}+ '원'"></p>
                 </ul>
             </ul>
         </section>

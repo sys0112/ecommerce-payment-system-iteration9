@@ -27,7 +27,7 @@ public class basketController {
 	@GetMapping("/list.do")
 	public String list(Model model,HttpSession session) {
 		memVo memVo=(memVo)session.getAttribute("memVo");
-        List<basketVo> basketList = ibr.findByMemberId(memVo.getId());
+        List<basketVo> basketList = ibr.findByMemberId(memVo.getEmail());
         
         // Calculate total sum
         int totalSum = basketList.stream().mapToInt(b -> b.getCount() * b.getItem().getPrice()).sum();
@@ -41,10 +41,10 @@ public class basketController {
 	@PostMapping("/insert.do")
 	public String insert(@RequestParam("itemNum")int itemNum,@RequestParam("count") int count,HttpSession session,  Model model){
 		memVo memVo=(memVo)session.getAttribute("memVo");
-		basketVo basketVo=ibr.findByItemNumAndMemberId( itemNum, memVo.getId());
+		basketVo basketVo=ibr.findByItemNumAndMemberId( itemNum, memVo.getEmail());
 		if(basketVo==null) {
 			basketVo=new basketVo();
-			basketVo.setMemberId(memVo.getId());
+			basketVo.setMemberId(memVo.getEmail());
 			basketVo.setItemNum(itemNum);
 			basketVo.setCount(count);
 			ibr.save(basketVo); //기존의 값이 없으면 insert  

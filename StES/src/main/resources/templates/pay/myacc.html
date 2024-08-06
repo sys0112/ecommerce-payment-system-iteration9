@@ -35,7 +35,7 @@
                 <tr th:each="pay : ${group.pays}">
                     <td th:text="${pay.payname}"></td>
                     <td th:text="${pay.count}"></td>
-                    <td th:text="${pay.price}"></td>
+                    <td th:text="${pay.price} + ' 원'"></td>
                 </tr>
             </tbody>
         </table>

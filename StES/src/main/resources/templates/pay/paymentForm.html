@@ -146,6 +146,7 @@
 
             var buyerName = document.getElementById('buyerName').innerText.trim();
             var buyerTel = document.getElementById('buyerTel').innerText.trim();
+            var buyerEmail = document.getElementById('buyerEmail').innerText.trim();
             var postcode = document.getElementById('postcode').value;
             var address = document.getElementById('address').value;
             var detailAddress = document.getElementById('detailAddress').value;
@@ -156,7 +157,7 @@
                 pay_method: payMethod, // 결제 수단
                 merchant_uid: 'order_' + new Date().getTime(), // 주문 ID
                 amount: totalSum, // 결제 금액
-                buyer_email: 'buyer@example.com', // 구매자 이메일
+                buyer_email: buyerEmail, // 구매자 이메일
                 buyer_name: buyerName, // 구매자 이름
                 buyer_tel: buyerTel, // 구매자 전화번호
                 buyer_addr: address, // 구매자 주소
@@ -211,7 +212,7 @@
             <table>
                 <tr>
                     <td><strong>아이디:</strong></td>
-                    <td th:text="${memVo.id}"></td>
+                    <td id="buyerEmail" th:text="${memVo.email}"></td>
                 </tr>
                 <tr>
                     <td><strong>이름:</strong></td>

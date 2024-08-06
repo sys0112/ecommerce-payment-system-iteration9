@@ -53,7 +53,7 @@ public class PaymentController {
     @GetMapping("/form")
     public String checkout(Model model, HttpSession session) {
         memVo memVo = (memVo) session.getAttribute("memVo");
-        List<basketVo> basketList = ibr.findByMemberId(memVo.getId());
+        List<basketVo> basketList = ibr.findByMemberId(memVo.getEmail());
 
         // 총합계 계산
         int totalSum = basketList.stream().mapToInt(b -> b.getCount() * b.getItem().getPrice()).sum();
@@ -157,7 +157,7 @@ public class PaymentController {
         pay.setPayname(item.getName()); // 예시로 첫 번째 아이템의 이름을 사용
         pay.setCount(item.getCount()); // 예시로 첫 번째 아이템의 개수를 사용
         pay.setPrice(item.getPrice()); // 예시로 첫 번째 아이템의 가격을 사용
-        pay.setMemberId(memVo.getId()); // 사용자 아이디 저장
+        pay.setMemberId(memVo.getEmail()); // 사용자 아이디 저장
         pay.setAddress(payRequest.getAddress().getAddress());
         pay.setPostcode(payRequest.getAddress().getPostcode());
         pay.setDetailAddress(payRequest.getAddress().getDetailAddress());
@@ -171,7 +171,7 @@ public class PaymentController {
         }
         
      // 장바구니 리스트 삭제
-        basketService.clearBasketForUser(memVo.getId());
+        basketService.clearBasketForUser(memVo.getEmail());
         
         return "결제 성공";
     }
@@ -204,7 +204,7 @@ public class PaymentController {
     @GetMapping("/myshop")
     public String myshop(Model model, HttpSession session) {
     	memVo memVo=(memVo)session.getAttribute("memVo");
-        List<payVo> payList = pr.findByMemberId(memVo.getId());
+        List<payVo> payList = pr.findByMemberId(memVo.getEmail());
         
      // pay_time을 년, 월, 일, 시, 분, 초 단위로 그룹화, null 값에 대해 기본값 설정
         Map<LocalDateTime, List<payVo>> groupedByPayTime = payList.stream()
