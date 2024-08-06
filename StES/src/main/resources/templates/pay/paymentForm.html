@@ -223,8 +223,8 @@
                     <td id="buyerTel" th:text="${memVo.phone}"></td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="text-align: right;"><strong>총합계:</strong></td>
-                    <td id="totalSum" th:text="${totalSum}"></td>
+                    <td><strong>총합계:</strong></td>
+                    <td id="totalSum" th:text="${totalSum} + '원'"></td>
                 </tr>
             </table>
         </div>
@@ -258,7 +258,7 @@
                 </label>
             </div>
             <div class="form-group">
-                <input type="button" value="결제" onclick="requestPay()">
+                <input type="button" value="결제" onclick="requestPay()" style="background-color: red;">
             </div>
         </div>
     </div>

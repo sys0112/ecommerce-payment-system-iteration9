@@ -45,7 +45,7 @@
             position: relative; /* 추가 */
             margin-bottom: 2rem;
             padding: 1rem;
-            border: 1px solid #ddd;
+            border: 1px solid #000;
             border-radius: 5px;
         }
         .section h3 {
@@ -116,7 +116,7 @@
                 <div th:each="pay : ${payList}" class="pay-item">
                     <p><strong>이름:</strong> <span th:text="${pay.buyerName != null ? pay.buyerName : '정보 없음'}"></span></p>
                     <p><strong>전화번호:</strong> <span th:text="${pay.buyerTel != null ? pay.buyerTel : '정보 없음'}"></span></p>
-                    <p><strong>주소:</strong> <span th:text="${pay.address != null ? pay.address : '정보 없음'}"></span>, <span th:text="${pay.postcode != null ? pay.postcode : '정보 없음'}"></span></p>
+                    <p><strong>주소:</strong> <span th:text="${pay.address != null ? pay.address : '정보 없음'}"></span>, <span th:text="${pay.detailAddress != null ? pay.detailAddress : '정보 없음'}"></span></p>
                 </div>
             </div>
             <div class="section">
