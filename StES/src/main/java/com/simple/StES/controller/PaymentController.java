@@ -224,10 +224,17 @@ public class PaymentController {
                 }
             }));
 
-        // 모델에 데이터를 추가
-        model.addAttribute("groupedPayList", groupedByPayTime.entrySet().stream()
+//        // 모델에 데이터를 추가
+//        model.addAttribute("groupedPayList", groupedByPayTime.entrySet().stream()
+//            .map(entry -> new PayGroup(entry.getKey(), entry.getValue()))
+//            .collect(Collectors.toList()));
+        // 그룹화된 데이터를 최신 날짜부터 정렬하여 모델에 추가
+        List<PayGroup> sortedPayGroups = groupedByPayTime.entrySet().stream()
+            .sorted((entry1, entry2) -> entry2.getKey().compareTo(entry1.getKey())) // 최신 날짜부터 정렬
             .map(entry -> new PayGroup(entry.getKey(), entry.getValue()))
-            .collect(Collectors.toList()));
+            .collect(Collectors.toList());
+
+        model.addAttribute("groupedPayList", sortedPayGroups);
         
         return "pay/myacc";
     }
