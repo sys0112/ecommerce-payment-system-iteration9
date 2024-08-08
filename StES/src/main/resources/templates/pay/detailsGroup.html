@@ -42,28 +42,48 @@
             color: #333;
         }
         .section {
-            position: relative; /* 추가 */
+            position: relative;
             margin-bottom: 2rem;
-            padding: 1rem;
-            border: 1px solid #000;
-            border-radius: 5px;
+            padding: 2rem 1rem 1rem;
+            border-radius: 0;
+            background: #fff;
         }
-        .section h3 {
-            position: absolute; /* 추가 */
-            top: -0.8rem; /* 추가: 텍스트를 상단으로 이동 */
-            left: 1rem; /* 추가: 텍스트를 왼쪽으로 이동 */
-            margin: 0;
-            padding: 0 0.5rem; /* 배경색과 겹치는 부분 여백 */
-            background: #f4f4f4; /* 배경색을 본문과 일치시킴 */
-            font-size: 1.2rem;
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 1rem;
+            width: calc(100% - 2rem);
+            height: 2px;
+            background: #000;
+            z-index: 0;
+        }
+        h3 {
+            position: relative;
+            margin: 1.5rem 0 0 1.5rem;
+            padding: 0 0.5rem;
+            background: #fff;
+            font-size: 0.7rem;
             color: #333;
+            border-radius: 0;
+            z-index: 1;
         }
         .pay-item {
+            display: flex;
+            align-items: center;
             padding: 1rem 0;
             border-bottom: 1px solid #eee;
         }
         .pay-item:last-child {
             border-bottom: none;
+        }
+        .pay-item img {
+            width: 100px;
+            height: auto;
+            margin-right: 1rem;
+        }
+        .pay-item .details {
+            flex: 1;
         }
         .pay-item p {
             margin: 0.5rem 0;
@@ -89,6 +109,28 @@
             margin: 0;
             font-size: 0.9rem;
         }
+        .details2 {
+            display: flex;
+            flex-direction: column;
+        }
+        .details2 p {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+        }
+        .details2 p strong {
+            font-weight: bold;
+        }
+        .details3 {
+            display: flex;
+            flex-direction: column;
+        }
+        .details3 p {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+        }
+        .details3 p strong {
+            font-weight: bold;
+        }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -111,19 +153,34 @@
     <div class="container">
         <h2 th:text="'주문 상세 정보 - ' + ${#temporals.format(payTime, 'yyyy-MM-dd')}"></h2>
         <div th:if="${payList != null && !payList.isEmpty()}">
+            <h3>아이템 정보</h3>
             <div class="section">
-                <h3>회원정보</h3>
                 <div th:each="pay : ${payList}" class="pay-item">
+                    <img th:src="@{/public/img/thubm/{img}(img=${pay.buyImg})}" alt="상품 이미지">
+                    <div class="details">
+                        <p><strong>상품명:</strong> <span th:text="${pay.payname}"></span></p>
+                        <p><strong>수량:</strong> <span th:text="${pay.count} + '개'"></span></p>
+                        <p><strong>가격:</strong> <span th:text="${pay.price} + '원'"></span></p>
+                    </div>
+                </div>
+            </div>
+            <h3>회원정보</h3>
+            <div class="section">
+                <div th:each="pay : ${payList}" class="pay-item">
+                <div class="details2">
                     <p><strong>이름:</strong> <span th:text="${pay.buyerName != null ? pay.buyerName : '정보 없음'}"></span></p>
                     <p><strong>전화번호:</strong> <span th:text="${pay.buyerTel != null ? pay.buyerTel : '정보 없음'}"></span></p>
                     <p><strong>주소:</strong> <span th:text="${pay.address != null ? pay.address : '정보 없음'}"></span>, <span th:text="${pay.detailAddress != null ? pay.detailAddress : '정보 없음'}"></span></p>
                 </div>
+                </div>
             </div>
+            <h3>결제</h3>
             <div class="section">
-                <h3>결제</h3>
                 <div th:each="pay : ${payList}" class="pay-item">
+                <div class="details3">
                     <p><strong>결제수단:</strong> <span th:text="${pay.paymentMethod != null ? pay.paymentMethod : '정보 없음'}"></span></p>
                     <p><strong>총금액:</strong> <span th:text="${pay.amount != null ? pay.amount : '정보 없음'} + '원'"></span></p>
+                </div>    
                 </div>
             </div>
         </div>

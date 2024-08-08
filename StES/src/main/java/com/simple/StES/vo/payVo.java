@@ -32,6 +32,7 @@ public class payVo {
 	private String paymentMethod;
 	@Column(name = "pay_time")
 	private LocalDateTime payTime;
+	private String buyImg;
 	private int amount;
 	
 	
@@ -112,6 +113,12 @@ public class payVo {
 	}
 	public void setAmount(int amount) {
 		this.amount = amount;
+	}	
+	public String getBuyImg() {
+		return buyImg;
+	}
+	public void setBuyImg(String buyImg) {
+		this.buyImg = buyImg;
 	}
 	
 	@Override
@@ -119,10 +126,8 @@ public class payVo {
 		return "payVo [payNum=" + payNum + ", payname=" + payname + ", count=" + count + ", price=" + price
 				+ ", memberId=" + memberId + ", address=" + address + ", postcode=" + postcode + ", detailAddress="
 				+ detailAddress + ", buyerName=" + buyerName + ", buyerTel=" + buyerTel + ", paymentMethod="
-				+ paymentMethod + ", payTime=" + payTime + ", amount=" + amount + "]";
+				+ paymentMethod + ", payTime=" + payTime + ", buyImg=" + buyImg + ", amount=" + amount + "]";
 	}
-
-	
-	
+		
 
 }

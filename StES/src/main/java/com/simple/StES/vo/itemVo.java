@@ -28,7 +28,8 @@ public class itemVo {
 	private String title;
 	private String count;
 	private int price;
-	private String detail_img;
+	@Column(name="detail_img")
+	private String detailImg;
 	private String model_num;
 	@Column(name="member_id")
 	private String memberId; 
@@ -68,12 +69,6 @@ public class itemVo {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public String getDetail_img() {
-		return detail_img;
-	}
-	public void setDetail_img(String detail_img) {
-		this.detail_img = detail_img;
-	}
 	public String getModel_num() {
 		return model_num;
 	}
@@ -98,11 +93,16 @@ public class itemVo {
 	public void setMainImg(String mainImg) {
 		this.mainImg = mainImg;
 	}
-	
+	public String getDetailImg() {
+		return detailImg;
+	}
+	public void setDetailImg(String detailImg) {
+		this.detailImg = detailImg;
+	}
 	@Override
 	public String toString() {
 		return "itemVo [itemNum=" + itemNum + ", name=" + name + ", title=" + title + ", count=" + count + ", price="
-				+ price + ", detail_img=" + detail_img + ", model_num=" + model_num + ", memberId=" + memberId
+				+ price + ", detailImg=" + detailImg + ", model_num=" + model_num + ", memberId=" + memberId
 				+ ", cateNum=" + cateNum + ", mainImg=" + mainImg + "]";
 	}
 	

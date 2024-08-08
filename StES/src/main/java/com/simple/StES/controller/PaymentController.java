@@ -70,7 +70,9 @@ public class PaymentController {
                 .map(basket -> new BasketDto(
                     basket.getItem().getName(),
                     basket.getCount(),
-                    basket.getItem().getPrice()
+                    basket.getItem().getPrice(),
+                    basket.getItem().getMainImg()
+                    
                 ))
                 .collect(Collectors.toList());
         
@@ -97,11 +99,13 @@ public class PaymentController {
         private String name;
         private int count;
         private int price;
+        private String img;
 
-        public BasketDto(String name, int count, int price) {
+        public BasketDto(String name, int count, int price, String img) {
             this.name = name;
             this.count = count;
             this.price = price;
+            this.img = img;
         }
 
 
@@ -133,6 +137,19 @@ public class PaymentController {
 		public void setPrice(int price) {
 			this.price = price;
 		}
+
+
+
+		public String getImg() {
+			return img;
+		}
+
+
+
+		public void setImg(String img) {
+			this.img = img;
+		}
+		
 
         
     }
@@ -166,6 +183,7 @@ public class PaymentController {
         pay.setPaymentMethod(payRequest.getPaymentMethod());
         pay.setAmount(payRequest.getAmount());
         pay.setPayTime(truncatedNow);
+        pay.setBuyImg(item.getImg());
 
         pr.save(pay);
         }
