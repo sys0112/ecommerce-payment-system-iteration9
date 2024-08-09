@@ -7,16 +7,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
+        /* CSS 수정 */
         .navbar-nav {
             flex-direction: row;
         }
         .category-menu {
             display: inline-block;
+            position: relative;
             margin-right: 20px;
         }
         .category-content {
             display: none;
             position: absolute;
+            top: 100%;
+            left: 0;
             background-color: white;
             border: 1px solid #ccc;
             z-index: 1000;
@@ -79,22 +83,64 @@
         .suffix {
             color: #000; /* Set a color that is visible */
         }
+        .navbar-custom {
+            background-color: #ffffff; /* 배경색을 흰색으로 변경 */
+            transition: background-color 0.3s ease; /* Smooth transition effect */
+        }
+        .navbar-custom .navbar-nav .nav-link, .navbar-custom .navbar-brand {
+            color: #000000; /* Dark text color for better contrast */
+        }
+        .navbar-custom .navbar-nav .nav-link:hover {
+            color: #007bff; /* Change hover color */
+        }
+        .navbar-custom .btn-outline-primary {
+            border-color: #000000;
+            color: #000000;
+        }
+        .navbar-custom .btn-outline-primary:hover {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        /* 드롭다운 메뉴를 세로로 정렬 */
+        .navbar-custom .dropdown-menu {
+            display: none; /* 기본적으로 숨김 */
+            flex-direction: column; /* 세로 방향으로 정렬 */
+            padding: 0;
+            background-color: #ffffff; /* 배경색을 흰색으로 변경 */
+            border: 1px solid #ccc; /* 경계선 설정 */
+            z-index: 1000;
+            width: auto; /* 너비를 자동으로 조정 */
+            min-width: 200px; /* 최소 너비 설정 (옵션) */
+        }
+
+        .navbar-custom .dropdown-menu .dropdown-item {
+            display: block;
+            padding: 10px;
+            color: #000000; /* Dark text color for better contrast */
+            text-align: left; /* 텍스트 왼쪽 정렬 */
+            white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
+        }
+
+        .navbar-custom .dropdown-item:hover {
+            background-color: #f0f0f0; /* 호버 시 배경색 설정 */
+        }
+
+        /* 메뉴 항목 간격 조정 */
+        .navbar-custom .dropdown-menu .dropdown-item {
+            margin: 0; /* 메뉴 항목 사이 간격 제거 */
+        }
+
+        /* 메뉴에 마우스를 올렸을 때 드롭다운 표시 */
+        .navbar-custom .nav-item:hover .dropdown-menu {
+            display: flex; /* 마우스를 올렸을 때 드롭다운 표시 */
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <div class="category-menu">
-                <div class="btn btn-outline-secondary">카테고리</div>
-                <div class="category-content">
-                    <div class="category-item">카테고리 1</div>
-                    <div class="category-item">카테고리 2</div>
-                    <div class="category-item">카테고리 3</div>
-                    <div class="category-item">카테고리 4</div>
-                </div>
-            </div>
             <a class="navbar-brand" href="/">
-                 myshop
+                myshop
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -138,6 +184,58 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </nav>
+
+    <!-- 새로운 상단 메뉴바 추가 -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" aria-expanded="false">
+                        의류
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="#">모자</a></li>
+                        <li><a class="dropdown-item" href="#">상의</a></li>
+                        <li><a class="dropdown-item" href="#">하의</a></li>
+                        <li><a class="dropdown-item" href="#">신발</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" aria-expanded="false">
+                        식품
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                        <li><a class="dropdown-item" href="#">과일</a></li>
+                        <li><a class="dropdown-item" href="#">채소</a></li>
+                        <li><a class="dropdown-item" href="#">축산</a></li>
+                        <li><a class="dropdown-item" href="#">수산</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" role="button" aria-expanded="false">
+                        뷰티
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
+                        <li><a class="dropdown-item" href="#">향수</a></li>
+                        <li><a class="dropdown-item" href="#">바디</a></li>
+                        <li><a class="dropdown-item" href="#">클렌징폼</a></li>
+                        <li><a class="dropdown-item" href="#">네일케어</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink4" role="button" aria-expanded="false">
+                        가구
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink4">
+                        <li><a class="dropdown-item" href="#">컴퓨터</a></li>
+                        <li><a class="dropdown-item" href="#">마우스</a></li>
+                        <li><a class="dropdown-item" href="#">키보드</a></li>
+                        <li><a class="dropdown-item" href="#">스피커</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </nav>
 
