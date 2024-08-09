@@ -18,6 +18,8 @@
         }
         .main-container {
             display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
             height: 600px; /* 슬라이더 높이 설정 */
             margin: 0; /* 여백 제거 */
@@ -37,29 +39,24 @@
             object-position: center; /* 이미지의 중앙을 컨테이너의 중앙에 맞춤 */
             transition: opacity 0.5s ease; /* 이미지 전환 효과 추가 */
         }
-        .text-container {
-            position: absolute; /* 슬라이드와 같은 레벨에 위치시키기 위해 절대 위치 설정 */
-            top: 50%; /* 수직 중앙 정렬 */
-            right: 50px; /* 오른쪽 여백 설정 */
-            transform: translateY(-50%); /* 수직 중앙 정렬 */
-            z-index: 1; /* 이미지 위에 위치하도록 설정 */
-            color: white; /* 텍스트 색상 흰색으로 설정 */
-            text-align: center; /* 텍스트 중앙 정렬 */
-            pointer-events: auto; /* 클릭 이벤트를 받을 수 있도록 설정 */
-        }
-        .text-item {
-            font-size: 1.2em;
-            padding: 7px 20px; /* 패딩 조정 */
-            border-radius: 5px;
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
             cursor: pointer;
-            margin: 10px 0; /* 마진 조정 */
-            background-color: rgba(255, 255, 255, 0.8); /* 배경색을 흰색으로 설정, 약간 투명 */
-            color: black; /* 텍스트 색상을 검은색으로 설정 */
-            transition: background-color 0.3s ease, border 0.3s ease; /* 배경색 및 보더 전환 효과 추가 */
-            border: 2px solid transparent; /* 기본 상태에서 보더 투명 */
+            z-index: 2;
+            padding: 10px;
+            border-radius: 50%;
         }
-        .text-item.active {
-            border: 2px solid #ff0000; /* 활성화된 상태의 보더 빨간색으로 설정 */
+        .slider-arrow.left {
+            left: 20px;
+        }
+        .slider-arrow.right {
+            right: 20px;
         }
         .image-gallery {
             display: flex;
@@ -94,14 +91,11 @@
     <header th:insert="header_nav.html"></header>
     
     <div class="main-container">
+        <button class="slider-arrow left" onclick="prevImage()">&#10094;</button>
         <div class="image-container">
             <img id="currentImage" src="/public/img/111.jpg" alt="Image 1">
-            <div class="text-container">
-                <div class="text-item" data-index="0">맛있는 채소</div>
-                <div class="text-item" data-index="1">특가 세일!</div>
-                <div class="text-item" data-index="2">과일과 차 한잔</div>
-            </div>
         </div>
+        <button class="slider-arrow right" onclick="nextImage()">&#10095;</button>
     </div>
     
     <div class="image-gallery">
@@ -118,15 +112,11 @@
             '/public/img/222.jpg',
             '/public/img/333.jpg'
         ];
-        const textItems = document.querySelectorAll('.text-item');
         const imageElement = document.getElementById('currentImage');
         let currentIndex = 0;
-        let hoverTimeout;
 
         function showImage(index) {
             imageElement.src = images[index];
-            textItems.forEach(item => item.classList.remove('active'));
-            textItems[index].classList.add('active');
         }
 
         function nextImage() {
@@ -134,36 +124,15 @@
             showImage(currentIndex);
         }
 
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            showImage(currentIndex);
+        }
+
         // Automatic image change every 3 seconds
         setInterval(nextImage, 3000);
-
-        // Change image when mouse is over a text item
-        textItems.forEach(text => {
-            text.addEventListener('mouseover', (event) => {
-                const index = parseInt(event.target.getAttribute('data-index'));
-
-                // Clear any existing timeout to avoid unwanted changes
-                clearTimeout(hoverTimeout);
-
-                // Change image immediately on mouseover
-                showImage(index);
-                currentIndex = index; // Update currentIndex
-
-                // Set a timeout to change image after 3 seconds
-                hoverTimeout = setTimeout(() => {
-                    nextImage();
-                }, 3000);
-            });
-
-            // Clear the timeout if mouse leaves the text item
-            text.addEventListener('mouseout', () => {
-                clearTimeout(hoverTimeout);
-            });
-        });
-
-        // Initialize the first item as active
-        showImage(currentIndex);
     </script>
+    
     <footer>
         <p>welcome to myshop!</p>
     </footer>
